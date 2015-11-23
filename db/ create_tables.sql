@@ -24,7 +24,6 @@ PRIMARY KEY (Patient_ID)
 
 ); 
 
-
 CREATE TABLE Patient_Comorb (
 
 Pt_Comorb_Key NVARCHAR(8) NOT NULL,
@@ -88,7 +87,7 @@ PRIMARY KEY (Cohort_Pt_Key)
 
 CREATE TABLE Cohort_Variable (
 
-Cohort_Variable_Key INT(11) NOT NULL,
+Cohort_Variable_Key INT(11) NOT NULL auto_increment,
 Cohort_Pt_Key INT(11) NOT NULL,
 Variable_Key INT(11) NOT NULL,
 
@@ -96,10 +95,10 @@ PRIMARY KEY (Cohort_Variable_Key)
 
 );
 
-
+drop table Cohort_Outcome;
 CREATE TABLE Cohort_Outcome (
 
-Cohort_Outcome_Key INT(11) NOT NULL,
+Cohort_Outcome_Key INT(11) NOT NULL auto_increment,
 Cohort_Pt_Key INT(11) NOT NULL,
 Outcome_Key INT(11) NOT NULL,
 Variable_Value NVARCHAR(10) NOT NULL,
