@@ -101,7 +101,7 @@ CREATE TABLE Cohort_Outcome (
 Cohort_Outcome_Key INT(11) NOT NULL auto_increment,
 Cohort_Pt_Key INT(11) NOT NULL,
 Outcome_Key INT(11) NOT NULL,
-Variable_Value NVARCHAR(10) NOT NULL,
+Outcome_Value NVARCHAR(10) NOT NULL,
 
 PRIMARY KEY (Cohort_Outcome_Key)
 
