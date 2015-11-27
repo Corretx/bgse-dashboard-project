@@ -16,6 +16,8 @@ install)
 	echo "Installing"
 
 	mysql -u $user -p$pswd < db/ecommerce.sql
+	mysql -u $user -p$pswd < db/create2.sql
+	mysql -u $user -p$pswd < db/inserts2.sql
 	mysql -u $user -p$pswd < data/ecommerce-dump.sql
 	mysql -u $user -p$pswd < analysis/Customers_by_product.sql
 
