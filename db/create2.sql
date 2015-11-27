@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS Group9db;
 CREATE DATABASE Group9db;
 
 -- select the database
