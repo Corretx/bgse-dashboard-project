@@ -24,6 +24,14 @@
     $title = "Products by revenues";
     query_and_print_graph($query,$title,"Euros");
 ?>
+
+<?php
+    // Total Revenue by product
+    
+    $query = "select age, count(gender) from cohort_patient group by age";
+    $title = "Distribution by age";
+    query_and_print_graph($query,$title,"Euros");
+?>
 	
 	<p>The chart below shows the results of a similar analysis, this time to rank the customers that contribute the most to total revenues. Only the top 20 customers are shown below.</p>
 	
