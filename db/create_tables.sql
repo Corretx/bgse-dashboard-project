@@ -95,7 +95,7 @@ PRIMARY KEY (Cohort_Variable_Key)
 
 );
 
-drop table Cohort_Outcome;
+
 CREATE TABLE Cohort_Outcome (
 
 Cohort_Outcome_Key INT(11) NOT NULL auto_increment,
