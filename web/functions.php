@@ -94,23 +94,36 @@ function query_and_print_graph($query,$title,$ylabel) {
     $str = "<script type='text/javascript'>
         function " . $id . "Chart() {";
     $str = $str . <<<MY_MARKER
-    nv.addGraph(function() {
-        var chart = nv.models.discreteBarChart()
-          .x(function(d) { return d.label })    //Specify the data accessors.
-          .y(function(d) { return d.value })
-          .staggerLabels(true)    //Too many bars and not enough room? Try staggering labels.
-          .tooltips(false)        //Show tooltips
-          .showValues(true)       //...instead, show the bar value right on top of each bar.
-          .transitionDuration(350);
-MY_MARKER;
-    $str = $str . PHP_EOL . 'chart.yAxis.axisLabel("' . $ylabel . '").axisLabelDistance(30)';
-    $str = $str . PHP_EOL . "d3.select('#" . $id . " svg')
-          .datum(" . $id . "Data())
-          .call(chart);";
-    $str = $str . <<<MY_MARKER
-      nv.utils.windowResize(chart.update);
+   d3.json("./mysqljson/dbread.php", function($result) {
+        var dataLoad =  d3.nest()
+                        .key(function(d){return d.gender})
+                        .rollup(function(u){
+                            return u.map(function(x){return [x.age,x.total]})})
+                        .entries($result);
 
-      return chart;
+
+    nv.addGraph(function() {
+    var chart = nv.models.multiBarChart()
+                  .x(function(d) {return d[0]})
+                  .y(function(d) {return d[1]})
+                  .margin({top: 50, bottom: 30, left: 40, right: 10});
+
+    chart.yAxis
+                .tickFormat(d3.format(',.1f')
+                
+    chart.xAxis
+                .tickFormat(d3.format(',.1f')
+    });
+
+    d3.select('#mainExample')
+      .datum(dataLoad)
+      .transition().duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+
     });
 }    
 MY_MARKER;
