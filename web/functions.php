@@ -17,6 +17,7 @@ function connect_to_db() {
 function document_header() {
     $str = <<<MY_MARKER
 <link rel='stylesheet' href='files/nv.d3.css' type='text/css'>
+<div id="chart"><svg></svg></div>
 <script src='files/d3.v2.js' type='text/javascript' ></script>
 <script src='files/nv.d3.js' type='text/javascript' ></script>
 <script>
