@@ -83,7 +83,7 @@ DROP VIEW IF EXISTS `Age_Gender`;
 
 CREATE VIEW Age_Gender AS
 Select age, count(gender) as gender 
-from Cohort_patient 
+from Cohort_Patient 
 group by age;
 
 
