@@ -131,7 +131,7 @@ MY_MARKER;
 }
 
 
-function query_and_print_graph_age_gender($query,$title,$ylabel) {
+function query_and_print_graph_multibar($query,$title,$ylabel) {
     $id = "graph" . $GLOBALS['graphid'];
     $GLOBALS['graphid'] = $GLOBALS['graphid'] + 1;
     
