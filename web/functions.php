@@ -4,7 +4,7 @@ function connect_to_db() {
     $host = "localhost";
     $dbuser = "root";
     $dbpass = "root";
-    $dbname = "ecommerce";
+    $dbname = "Group9db";
 
     $link = mysql_connect($host,$dbuser,$dbpass);
 
@@ -129,6 +129,66 @@ MY_MARKER;
     echo $str;
 
 }
+
+function graph1($query,$title,$ylabel) {
+    $id = "graph" . $GLOBALS['graphid'];
+    $GLOBALS['graphid'] = $GLOBALS['graphid'] + 1;
+    
+    echo "<h2>" . $title . "</h2>";
+    echo PHP_EOL,'<div id="'. $id . '"><svg style="height:300px"></svg></div>',PHP_EOL;
+
+    // Perform Query
+    $result = mysql_query($query);
+
+    // Check result
+    // This shows the actual query sent to MySQL, and the error. Useful for debugging.
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysql_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
+
+    $str = "<script type='text/javascript'>
+        function " . $id . "Chart() {";
+    $str = $str . <<<MY_MARKER
+    
+    
+    var chart = nv.models.multiBarChart()
+      .transitionDuration(350)
+      .reduceXTicks(true)   //If 'false', every single x-axis tick label will be rendered.
+      .rotateLabels(0)      //Angle to rotate x-axis labels.
+      .showControls(true)   //Allow user to switch between 'Grouped' and 'Stacked' mode.
+      .groupSpacing(0.1)    //Distance between each group of bars.
+    ;
+    
+MY_MARKER;
+    $str = $str . PHP_EOL . 'chart.yAxis.axisLabel("' . $ylabel . '").axisLabelDistance(30)';
+    $str = $str . PHP_EOL . "d3.select('#" . $id . " svg')
+          .datum(" . $id . "Data())
+          .call(chart);";
+    $str = $str . <<<MY_MARKER
+
+    nv.utils.windowResize(chart.update);
+    return chart;
+    });
+}    
+MY_MARKER;
+    $str = $str . PHP_EOL . $id . "Chart();" . PHP_EOL;
+    $str = $str . PHP_EOL . "mycharts.push(". $id . "Chart)" . PHP_EOL;
+    $str = $str . PHP_EOL . "function " . $id . "Data() {
+ return  [ 
+    {
+      key:"; 
+    $str = $str . '"' . $title . '", values: [';
+
+    while ($row = mysql_fetch_array($result)) {
+        $str = $str . '{ "label":"' . $row[0] . '","value":' . $row[1] . '},' . PHP_EOL;
+    }    
+    $str = $str . '] } ] }</script>';
+    echo $str;
+
+}
+
 
 function query_and_print_series($query,$title,$label) {
     $id = "graph" . $GLOBALS['graphid'];
