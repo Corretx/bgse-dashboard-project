@@ -79,6 +79,14 @@ Enclosed by '"'
 Lines terminated by '\n'
 Ignore 1 rows;
 
+DROP VIEW IF EXISTS `Age_Gender`;
+
+CREATE VIEW Age_Gender AS
+Select age, count(gender) as gender 
+from Group9db.Cohort_patient 
+group by age;
+
+
 -- Queries for inserts into Cohort_Variable
 
 DELIMITER $$
