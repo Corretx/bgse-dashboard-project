@@ -33,6 +33,13 @@
     query_and_print_graph_age_gender($query,$title,"People");
 ?>
 
+<?php
+    // Total Revenue by product
+    
+    $query = "Select age,gender,count(*) from Group9db.Cohort_Patient where Drug_Name = 'Novolog' group by age,gender";
+    $title = "Distribution by age";
+    query_and_print_table($query,$title,"People");
+?>
 
 <?php
     // Total Revenue by product
@@ -42,6 +49,14 @@
     query_and_print_graph($query,$title,"People");
 ?>
 
+<?php
+    // Total Revenue by product
+    
+    $query = "Select age,gender from Group9db.Age_Gender";
+    $title = "Distribution by age";
+    query_and_print_table($query,$title,"People");
+?>
+
 	<p>The chart below shows the results of a similar analysis, this time to rank the customers that contribute the most to total revenues. Only the top 20 customers are shown below.</p>
 	
 <?php
@@ -49,7 +64,7 @@
 	
 	$query = "SELECT b.CustomerID Customer, sum(a.Quantity*a.UnitPrice) Revenues from ecommerce.order_details a left join ecommerce.orders b on a.OrderID=b.OrderID group by CustomerID order by Revenues desc limit 20";
 	$title = "Customers by revenues";
-	query_and_print_table($query,$title);
+	query_and_print_graph($query,$title);
 ?>
 
 	<p>Once we have identified the best selling products and the top customers, we seek to improve our understanding of the relationships between them.</p>
