@@ -71,29 +71,6 @@
 	
 	<p> We then go one layer further to look at the associations between products. The following table shows a ranking of pairs of products that tend to be purchased together. The pairs of products are ranked according to the number of times each pair appears in a transaction. To focus on the most relevant information, we show only the product pairs that appear at least five times. While this information does not, on its own, provide a fully-fledge recommendation system, it can provide insight on customers behaviour that can be used in setting up marketing campaigns.</p>
 	
-<?php
-
-	// Most sold product pairs
-	
-	$query = "SELECT
-			  P1.ProductName as Product_1,
-       		  P2.ProductName as Product_2,
-       		  Count(DISTINCT O1.OrderID) as Number_of_occurrences
-			  FROM ecommerce.products P1
-       		  JOIN ecommerce.products P2
-         	  ON P1.ProductID != P2.ProductID
-       		  LEFT JOIN ecommerce.order_details O1
-              INNER JOIN ecommerce.order_details O2
-                ON O1.OrderID = O2.OrderID
-         		ON O1.ProductID = P1.ProductId
-            	AND O2.ProductID = P2.ProductID 
-			  WHERE P1.ProductID > P2.ProductID
-              GROUP BY P1.ProductID, P2.ProductID
-              HAVING COUNT(DISTINCT O1.OrderID)>=5
-			  ORDER BY Count(DISTINCT O1.OrderID) DESC";
-	$title = "Pairs of products frequently purchased together";
-	query_and_print_table($query,$title);
-?>
 	<p> In the next tab, we take this analysis further by implementing a product recommendation system and by looking at customers marginal contribution to revenues using a LASSO regression.</p>
 
 
