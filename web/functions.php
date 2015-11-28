@@ -73,7 +73,7 @@ function query_and_print_table($query,$title) {
 }
 
 
-function query_and_print_graph($query,$title,$ylabel) {
+function query_and_print_graph_multibar($query,$title,$ylabel) {
     $id = "graph" . $GLOBALS['graphid'];
     $GLOBALS['graphid'] = $GLOBALS['graphid'] + 1;
     
@@ -144,7 +144,7 @@ MY_MARKER;
 }
 
 
-function query_and_print_graph_multibar($query,$title,$ylabel) {
+function query_and_print_graph($query,$title,$ylabel) {
     $id = "graph" . $GLOBALS['graphid'];
     $GLOBALS['graphid'] = $GLOBALS['graphid'] + 1;
     
@@ -166,19 +166,13 @@ function query_and_print_graph_multibar($query,$title,$ylabel) {
         function " . $id . "Chart() {";
     $str = $str . <<<MY_MARKER
     nv.addGraph(function() {
-        var chart = nv.models.multiBarChart()
+        var chart = nv.models.discreteBarChart()
           .x(function(d) { return d.label })    //Specify the data accessors.
           .y(function(d) { return d.value })
           .staggerLabels(true)    //Too many bars and not enough room? Try staggering labels.
           .tooltips(false)        //Show tooltips
           .showValues(true)       //...instead, show the bar value right on top of each bar.
           .transitionDuration(350);
-          .reduceXTicks(true)   //If 'false', every single x-axis tick label will be rendered.
-          .rotateLabels(0)      //Angle to rotate x-axis labels.
-          .showControls(true)   //Allow user to switch between 'Grouped' and 'Stacked' mode.
-          .groupSpacing(0.1)    //Distance between each group of bars.
-          
-          
 MY_MARKER;
     $str = $str . PHP_EOL . 'chart.yAxis.axisLabel("' . $ylabel . '").axisLabelDistance(30)';
     $str = $str . PHP_EOL . "d3.select('#" . $id . " svg')
