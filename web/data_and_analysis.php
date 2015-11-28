@@ -28,7 +28,7 @@
 <?php
     // Total Revenue by product
     
-    $query = "select age,gender from Group9db.Age_Gender";
+    $query = "Select age,gender from Group9db.Age_Gender";
     $title = "Distribution by age";
     query_and_print_graph($query,$title,"Euros");
 ?>
@@ -36,7 +36,7 @@
 <?php
     // Total Revenue by product
     
-    $query = "select age,gender from Group9db.Age_Gender";
+    $query = "Select age,gender from Group9db.Age_Gender";
     $title = "Distribution by age";
     query_and_print_graph($query,$title,"Euros");
 ?>
