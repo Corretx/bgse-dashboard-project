@@ -28,7 +28,7 @@
 <?php
     // Total Revenue by product
     
-    $query = "SELECT age, count(gender) from Group9db.Cohort_patient group by age";
+    $query = "select age,gender from Group9db.Age_Gender";
     $title = "Distribution by age";
     query_and_print_graph($query,$title,"Euros");
 ?>
