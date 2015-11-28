@@ -33,6 +33,15 @@
     query_and_print_graph_age_gender($query,$title,"People");
 ?>
 
+
+<?php
+    // Total Revenue by product
+    
+    $query = "Select age,gender from Group9db.Age_Gender";
+    $title = "Distribution by age";
+    query_and_print_graph($query,$title,"People");
+?>
+
 	<p>The chart below shows the results of a similar analysis, this time to rank the customers that contribute the most to total revenues. Only the top 20 customers are shown below.</p>
 	
 <?php
