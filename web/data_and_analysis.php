@@ -23,8 +23,8 @@
     
     $query1 = "Select age,gender from Group9db.Novolog_female";
     $query2 = "Select age,gender from Group9db.Novolog_male";
-    $title = "Distribution by age";
-    query_and_print_graph_multibar($query1,$query2,$title,"People");
+    $title = "Novolog patients";
+    query_and_print_graph_multibar($query1,$query2,$title,"Patients");
 ?>
 
 <?php
@@ -32,8 +32,8 @@
     
     $query = "Select age,gender from Group9db.Humalog_female";
     $query2 = "Select age,gender from Group9db.Humalog_male";
-    $title = "Distribution by age";
-    query_and_print_graph_multibar($query,$query2,$title,"People");
+    $title = "Humalog patients";
+    query_and_print_graph_multibar($query,$query2,$title,"Patients");
 ?>
 
 
