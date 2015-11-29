@@ -262,13 +262,8 @@ function query_and_print_graph_multibar2($query,$query2,$title,$ylabel) {
     $str = $str . <<<MY_MARKER
    nv.addGraph(function() {
     var chart = nv.models.multiBarChart()
-        .y(function(d) { return d.label })
-        .x(function(d) { return d.value })
-        .margin({top: 30, right: 20, bottom: 50, left: 175})
-        .showValues(true)           //Show bar value next to each bar.
-        .tooltips(true)             //Show tooltips on hover.
-        .transitionDuration(350)
-        .showControls(true);
+        .x(function(d) { return d.label })
+        .y(function(d) { return d.value });
     chart.yAxis     //Chart y-axis settings
       .axisLabel('Y')
       .tickFormat(d3.format('.0f'));
