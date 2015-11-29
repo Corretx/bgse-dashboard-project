@@ -75,7 +75,7 @@
     
     $query = "Select age,gender from Group9db.Humalog_female";
     $query2 = "Select age,gender from Group9db.Humalog_male";
-    $title = "Distribution by age";
+    $title = "Vertical Distribution by age";
     query_and_print_graph_multibar2($query,$query2,$title,"People");
 ?>
 
