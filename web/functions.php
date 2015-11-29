@@ -280,5 +280,130 @@ MY_MARKER;
 
 }
 
+function query_and_print_graph_multibar1($query,$query2,$title,$ylabel) {
+    $id = "graph" . $GLOBALS['graphid'];
+    $GLOBALS['graphid'] = $GLOBALS['graphid'] + 1;
+    
+    echo "<h2>" . $title . "</h2>";
+    echo PHP_EOL,'<div id="'. $id . '"><svg style="height:300px"></svg></div>',PHP_EOL;
+    // Perform Query
+    $result = mysql_query($query);
+    $result2 = mysql_query($query2);
+    // Check result
+    // This shows the actual query sent to MySQL, and the error. Useful for debugging.
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysql_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
+    $str = "<script type='text/javascript'>
+        function " . $id . "Chart() {";
+    $str = $str . <<<MY_MARKER
+   nv.addGraph(function() {
+    var chart = nv.models.multiBarHorizontalChart()
+        .x(function(d) { return d.label })
+        .y(function(d) { return d.value })
+        .margin({top: 30, right: 20, bottom: 50, left: 175})
+        .showValues(true)           //Show bar value next to each bar.
+        .tooltips(true)             //Show tooltips on hover.
+        .transitionDuration(350)
+        .showControls(true);
+    chart.yAxis     //Chart y-axis settings
+      .axisLabel('Y')
+      .tickFormat(d3.format('.0f'));
+    
+MY_MARKER;
+    $str = $str . PHP_EOL . 'chart.yAxis.axisLabel("' . $ylabel . '").axisLabelDistance(30)';
+    $str = $str . PHP_EOL . "d3.select('#" . $id . " svg')
+          .datum(" . $id . "Data())
+          .call(chart);";
+    $str = $str . <<<MY_MARKER
+      nv.utils.windowResize(chart.update);
+      return chart;
+    });
+}    
+MY_MARKER;
+    $str = $str . PHP_EOL . $id . "Chart();" . PHP_EOL;
+    $str = $str . PHP_EOL . "mycharts.push(". $id . "Chart)" . PHP_EOL;
+    $str = $str . PHP_EOL . "function " . $id . 'Data() {
+ return  [ 
+    {
+      "key": "Female", color: "#e1aebb"'; 
+    $str = $str . ', values: [';
+    while ($row = mysql_fetch_array($result)) {
+        $str = $str . '{ "label":"' . $row[0] . '","value":' . $row[1] . '},' . PHP_EOL;
+    }
+    $str = $str . '] }, {
+    "key": "Male", color: "#aecbe1" ';
+    $str = $str . ', values: [';
+    while ($row = mysql_fetch_array($result2)) {
+        $str = $str . '{ "label":"' . $row[0] . '","value":' . $row[1] . '},' . PHP_EOL;
+    }
+    $str = $str . '] } ] }</script>';
+    echo $str;
+}
+
+function query_and_print_graph_multibar2($query,$query2,$title,$ylabel) {
+    $id = "graph" . $GLOBALS['graphid'];
+    $GLOBALS['graphid'] = $GLOBALS['graphid'] + 1;
+    
+    echo "<h2>" . $title . "</h2>";
+    echo PHP_EOL,'<div id="'. $id . '"><svg style="height:300px"></svg></div>',PHP_EOL;
+    // Perform Query
+    $result = mysql_query($query);
+    $result2 = mysql_query($query2);
+    // Check result
+    // This shows the actual query sent to MySQL, and the error. Useful for debugging.
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysql_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
+    $str = "<script type='text/javascript'>
+        function " . $id . "Chart() {";
+    $str = $str . <<<MY_MARKER
+   nv.addGraph(function() {
+    var chart = nv.models.multiBarHorizontalChart()
+        .x(function(d) { return d.label })
+        .y(function(d) { return d.value })
+        .margin({top: 30, right: 20, bottom: 50, left: 175})
+        .showValues(true)           //Show bar value next to each bar.
+        .tooltips(true)             //Show tooltips on hover.
+        .transitionDuration(350)
+        .showControls(true);
+    chart.yAxis     //Chart y-axis settings
+      .axisLabel('Y')
+      .tickFormat(d3.format('.0f'));
+    
+MY_MARKER;
+    $str = $str . PHP_EOL . 'chart.yAxis.axisLabel("' . $ylabel . '").axisLabelDistance(30)';
+    $str = $str . PHP_EOL . "d3.select('#" . $id . " svg')
+          .datum(" . $id . "Data())
+          .call(chart);";
+    $str = $str . <<<MY_MARKER
+      nv.utils.windowResize(chart.update);
+      return chart;
+    });
+}    
+MY_MARKER;
+    $str = $str . PHP_EOL . $id . "Chart();" . PHP_EOL;
+    $str = $str . PHP_EOL . "mycharts.push(". $id . "Chart)" . PHP_EOL;
+    $str = $str . PHP_EOL . "function " . $id . 'Data() {
+ return  [ 
+    {
+      "key": "Female", color: "#e1aebb"'; 
+    $str = $str . ', values: [';
+    while ($row = mysql_fetch_array($result)) {
+        $str = $str . '{ "label":"' . $row[0] . '","value":' . $row[1] . '},' . PHP_EOL;
+    }
+    $str = $str . '] }, {
+    "key": "Male", color: "#aecbe1" ';
+    $str = $str . ', values: [';
+    while ($row = mysql_fetch_array($result2)) {
+        $str = $str . '{ "label":"' . $row[0] . '","value":' . $row[1] . '},' . PHP_EOL;
+    }
+    $str = $str . '] } ] }</script>';
+    echo $str;
+}
 
 ?>
