@@ -70,6 +70,15 @@
     query_and_print_graph_multibar1($query,$query2,$title,"People");
 ?>
 
+<?php
+    // Total Revenue by product
+    
+    $query = "Select age,gender from Group9db.Humalog_female";
+    $query2 = "Select age,gender from Group9db.Humalog_male";
+    $title = "Distribution by age";
+    query_and_print_graph_multibar2($query,$query2,$title,"People");
+?>
+
 
 <?php
 	// Close connection
