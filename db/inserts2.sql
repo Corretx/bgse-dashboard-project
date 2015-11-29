@@ -93,7 +93,7 @@ group by age;
 
 DROP VIEW IF EXISTS `Humalog_male`;
 
-CREATE VIEW Humalog_female AS
+CREATE VIEW Humalog_male AS
 Select age, count(gender) as gender 
 from Cohort_Patient 
 where Drug_Name = 'Humalog' 
@@ -102,7 +102,7 @@ group by age;
 
 DROP VIEW IF EXISTS `Novolog_male`;
 
-CREATE VIEW Novolog_female AS
+CREATE VIEW Novolog_male AS
 Select age, count(gender) as gender 
 from Cohort_Patient 
 where Drug_Name = 'Novolog' 
