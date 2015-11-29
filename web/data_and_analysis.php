@@ -46,7 +46,7 @@
 <?php
     // Total Revenue by product
     
-    $query = "Select age,count(*) from Group9db.Cohort_Patient where Drug_Name = 'Novolog' and Gender = 'female' group by gender,age";
+    $query = "Select age,gender from Group9db.Age_Gender";
     $query2 = "Select age,gender from Group9db.Age_Gender";
     $title = "Distribution by age";
     query_and_print_graph_multibar1($query,$query2,$title,"People");
@@ -55,10 +55,19 @@
 <?php
     // Total Revenue by product
     
-    $query = "Select age,gender from Group9db.Age_Gender";
-    $query2 = "Select age,gender from Group9db.Age_Gender";
+    $query = "Select age,gender from Group9db.Novolog_female";
+    $query2 = "Select age,gender from Group9db.Novolog_male";
     $title = "Distribution by age";
-    query_and_print_graph_multibar2($query,$query2,$title,"People");
+    query_and_print_graph_multibar1($query,$query2,$title,"People");
+?>
+
+<?php
+    // Total Revenue by product
+    
+    $query = "Select age,gender from Group9db.Humalog_female";
+    $query2 = "Select age,gender from Group9db.Humalog_male";
+    $title = "Distribution by age";
+    query_and_print_graph_multibar1($query,$query2,$title,"People");
 ?>
 
 
