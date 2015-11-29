@@ -202,7 +202,7 @@ function query_and_print_graph_multibar1($query,$query2,$title,$ylabel) {
         .x(function(d) { return d.label })
         .y(function(d) { return d.value })
         .margin({top: 30, right: 20, bottom: 50, left: 175})
-        .showValues(true)           //Show bar value next to each bar.
+        .showValues(false)           //Show bar value next to each bar.
         .tooltips(true)             //Show tooltips on hover.
         .transitionDuration(350)
         .showControls(true);
@@ -229,7 +229,7 @@ MY_MARKER;
       "key": "Female", color: "#e1aebb"'; 
     $str = $str . ', values: [';
     while ($row = mysql_fetch_array($result)) {
-        $str = $str . '{ "label":"' . $row[0] . '","value":' . $row[1] . '},' . PHP_EOL;
+        $str = $str . '{ "x":"' . $row[0] . '","y":' . $row[1] . '},' . PHP_EOL;
     }
     $str = $str . '] }, {
     "key": "Male", color: "#aecbe1" ';
@@ -292,13 +292,13 @@ MY_MARKER;
       "key": "Female", color: "#e1aebb"'; 
     $str = $str . ', values: [';
     while ($row = mysql_fetch_array($result)) {
-        $str = $str . '{ "label":"' . $row[0] . '","value":' . $row[1] . '},' . PHP_EOL;
+        $str = $str . '{ "x":"' . $row[0] . '","y":' . $row[1] . '},' . PHP_EOL;
     }
     $str = $str . '] }, {
     "key": "Male", color: "#aecbe1" ';
     $str = $str . ', values: [';
     while ($row = mysql_fetch_array($result2)) {
-        $str = $str . '{ "label":"' . $row[0] . '","value":' . $row[1] . '},' . PHP_EOL;
+        $str = $str . '{ "x":"' . $row[0] . '","y":' . $row[1] . '},' . PHP_EOL;
     }
     $str = $str . '] } ] }</script>';
     echo $str;
