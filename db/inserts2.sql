@@ -119,6 +119,14 @@ and Gender = 'female'
 group by age;
 
 
+DROP VIEW IF EXISTS `Age_Gender`;
+
+CREATE VIEW Age_Gender AS
+Select age, count(gender) as gender 
+from Cohort_Patient 
+group by age;
+
+
 -- Queries for inserts into Cohort_Variable
 
 DELIMITER $$
