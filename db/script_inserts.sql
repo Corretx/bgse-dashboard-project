@@ -115,41 +115,8 @@ DELIMITER ;
 
 call cohort_var_ins;
 
--- Query for comorbidities 
-Select B.Cohort_Pt_Key,C.Variable_Key from
-Patient_Comorb A, Cohort_Patient B, Variable_Meta C 
-where A.Patient_ID = B.Patient_ID
-and A.Comorb_Name  = C.Variable_Name
-and C.Variable_Type = 'Comorbidity';
 
 
--- Query for prescriptions 
-Select distinct B.Cohort_Pt_Key,C.Variable_Key from
-Patient_Master A, Cohort_Patient B, Variable_Meta C, Encounter_Prescription D, Encounter_Master E
-where A.Patient_ID = B.Patient_ID
-and A.Patient_ID = E.Patient_ID
-and E.Encounter_ID = D.Encounter_ID
-and C.Variable_Name  = D.Prescription_Name
-and C.Variable_Type = 'Prescription'; 
-
-select A.Cohort_Pt_Key, B.Variable_Key from
-Cohort_Patient A, Variable_Meta B
-where Replace(A.Age,'[','Age.[') = B.Variable_Name;
-
-select A.Cohort_Pt_Key, B.Variable_Key from
-Cohort_Patient A, Variable_Meta B
-where A.Gender = B.Variable_Name;
-
-select A.Cohort_Pt_Key, B.Variable_Key from
-Cohort_Patient A, Variable_Meta B
-where A.Race = B.Variable_Name;
-
-
-
-
-
-
-use Group9db;
 
 select * from Cohort_Variable;
 
@@ -179,7 +146,7 @@ where A.Patient_ID = B.Patient_ID
 and C.Encounter_ID = B.Encounter_ID
 and replace(C.Outcome_Name,'_','.') = D.Outcome_Name
 and D.Outcome_Type = 'Utilization.Sum'
-group by A.Cohort_Pt_Key
+group by A.Cohort_Pt_Key, D.Outcome_Key
 
 union all
 
@@ -219,14 +186,20 @@ group by A.Cohort_Pt_Key
 
 union all
 
-Select A.Cohort_Pt_Key, D.Outcome_Key, C.Outcome_Value from
+
+select Cohort_Pt_Key,Outcome_Key,Outcome_Value from
+(Select Cohort_Pt_Key,Outcome_Key,Outcome_Value, max(Frequency) from
+(SELECT A.Cohort_Pt_Key, D.Outcome_Key, C.Outcome_Value, count(*) as Frequency
+from
 Cohort_Patient A, Encounter_Master B, Encounter_Outcome C, Outcome_Meta D  
 where A.Patient_ID = B.Patient_ID
 and C.Encounter_ID = B.Encounter_ID
 and C.Outcome_Name = D.Outcome_Name
 and D.Outcome_Type = 'Laboratory'
-group by A.Cohort_Pt_Key,D.Outcome_Key
-order by count(*) DESC limit 0,1
+and C.Outcome_Value <> 'None'
+GROUP BY A.Cohort_Pt_Key, D.Outcome_Key, C.Outcome_Value) A
+group by Cohort_Pt_Key,Outcome_Key) B
+
 
 union all
 
@@ -239,7 +212,7 @@ and B.Discharge_Type = 'Expired'
 ;
 END $$
 DELIMITER ;
-
+drop procedure cohort_out_ins;
 call cohort_out_ins;
 select distinct Prescription_Name from Encounter_Prescription;
 select * from Cohort_Outcome limit 50;
@@ -249,7 +222,48 @@ use Group9db;
 
 
 
+SELECT Cohort_Pt_Key, Outcome_Key, Outcome_Value, COUNT(*) AS x 
+FROM Cohort_Outcome 
+GROUP BY Cohort_Pt_Key, Outcome_Key, Outcome_Value
+ORDER BY x DESC
+LIMIT 1;
+
+select * from Cohort_Outcome;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+use Group9db;
+
+
+describe Cohort_Outcome;
+select * from Cohort_Outcome limit 20;
+
+
+SELECT A.Cohort_Pt_Key, D.Outcome_Key, max(C.Outcome_Value)
+from
+Cohort_Patient A, Encounter_Master B, Encounter_Outcome C, Outcome_Meta D  
+where A.Patient_ID = B.Patient_ID
+and C.Encounter_ID = B.Encounter_ID
+and C.Outcome_Name = D.Outcome_Name
+and D.Outcome_Type = 'Laboratory'
+GROUP BY A.Cohort_Pt_Key, D.Outcome_Key, C.Outcome_Value;
 
