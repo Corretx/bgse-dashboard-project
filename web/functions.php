@@ -238,4 +238,41 @@ MY_MARKER;
     echo $str;
 }
 
+function query_and_print_table2($query,$title) {
+    // Perform Query
+    $result = mysql_query($query);
+    // Check result
+    // This shows the actual query sent to MySQL, and the error. Useful for debugging.
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysql_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
+    // Use result
+    // Attempting to print $result won't allow access to information in the resource
+    // One of the mysql result functions must be used
+    // See also mysql_result(), mysql_fetch_array(), mysql_fetch_row(), etc.
+    echo "<h2>" . $title . "</h2>";
+    echo "<table align='center' border='1' bordercolor='#B2C3CE'>";
+    echo "<thead><tr></tr>";
+    $row = mysql_fetch_assoc($result);
+    foreach ($row as $col => $value) {                
+        echo "<th bgcolor='#B2C3CE'> . $col . "</th>";
+    }
+    echo "</tr></thead>";
+    // Write rows
+    mysql_data_seek($result, 0);
+    while ($row = mysql_fetch_assoc($result)) {
+        echo "<tr>";
+        foreach ($row as $e) {                
+            echo "<td>" . $e . "</td>";
+        }
+        echo "</tr>";
+    }
+    echo "</table>";
+    // Free the resources associated with the result set
+    // This is done automatically at the end of the script
+    mysql_free_result($result);
+}
+
 ?>
