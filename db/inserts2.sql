@@ -79,11 +79,43 @@ Enclosed by '"'
 Lines terminated by '\n'
 Ignore 1 rows;
 
-DROP VIEW IF EXISTS `Age_Gender`;
 
-CREATE VIEW Age_Gender AS
+-- Creating views
+
+DROP VIEW IF EXISTS `Humalog_female`;
+
+CREATE VIEW Humalog_female AS
 Select age, count(gender) as gender 
 from Cohort_Patient 
+where Drug_Name = 'Humalog' 
+and Gender = 'female' 
+group by age;
+
+DROP VIEW IF EXISTS `Humalog_male`;
+
+CREATE VIEW Humalog_female AS
+Select age, count(gender) as gender 
+from Cohort_Patient 
+where Drug_Name = 'Humalog' 
+and Gender = 'male' 
+group by age;
+
+DROP VIEW IF EXISTS `Novolog_male`;
+
+CREATE VIEW Novolog_female AS
+Select age, count(gender) as gender 
+from Cohort_Patient 
+where Drug_Name = 'Novolog' 
+and Gender = 'male' 
+group by age;
+
+DROP VIEW IF EXISTS `Novolog_female`;
+
+CREATE VIEW Novolog_female AS
+Select age, count(gender) as gender 
+from Cohort_Patient 
+where Drug_Name = 'Novolog' 
+and Gender = 'female' 
 group by age;
 
 
@@ -122,57 +154,6 @@ END $$
 DELIMITER ;
 
 call cohort_var_ins;
-
--- Query for comorbidities 
-Select B.Cohort_Pt_Key,C.Variable_Key from
-Patient_Comorb A, Cohort_Patient B, Variable_Meta C 
-where A.Patient_ID = B.Patient_ID
-and A.Comorb_Name  = C.Variable_Name
-and C.Variable_Type = 'Comorbidity';
-
-
--- Query for prescriptions 
-Select distinct B.Cohort_Pt_Key,C.Variable_Key from
-Patient_Master A, Cohort_Patient B, Variable_Meta C, Encounter_Prescription D, Encounter_Master E
-where A.Patient_ID = B.Patient_ID
-and A.Patient_ID = E.Patient_ID
-and E.Encounter_ID = D.Encounter_ID
-and C.Variable_Name  = D.Prescription_Name
-and C.Variable_Type = 'Prescription'; 
-
-select A.Cohort_Pt_Key, B.Variable_Key from
-Cohort_Patient A, Variable_Meta B
-where Replace(A.Age,'[','Age.[') = B.Variable_Name;
-
-select A.Cohort_Pt_Key, B.Variable_Key from
-Cohort_Patient A, Variable_Meta B
-where A.Gender = B.Variable_Name;
-
-select A.Cohort_Pt_Key, B.Variable_Key from
-Cohort_Patient A, Variable_Meta B
-where A.Race = B.Variable_Name;
-
-
-
-
-
-
-use Group9db;
-
-select * from Cohort_Variable;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 -- Queries for inserts into Cohort_Outcome
@@ -249,8 +230,3 @@ END $$
 DELIMITER ;
 
 call cohort_out_ins;
-select distinct Prescription_Name from Encounter_Prescription;
-select * from Cohort_Outcome limit 50;
-
-
-use Group9db;
