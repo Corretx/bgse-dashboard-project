@@ -363,7 +363,7 @@ function query_and_print_graph_multibar2($query,$query2,$title,$ylabel) {
         function " . $id . "Chart() {";
     $str = $str . <<<MY_MARKER
    nv.addGraph(function() {
-    var chart = nv.models.multiBarHorizontalChart()
+    var chart = nv.models.multiBarChart()
         .x(function(d) { return d.label })
         .y(function(d) { return d.value })
         .margin({top: 30, right: 20, bottom: 50, left: 175})
