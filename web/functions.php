@@ -203,7 +203,6 @@ function query_and_print_graph_multibar($query,$query2,$title,$ylabel) {
         .x(function(d) { return d.label })
         .y(function(d) { return d.value })
         .showControls(false)
-        .showValues(true);
     chart.yAxis     //Chart y-axis settings
       .axisLabel('Patients')
       .tickFormat(d3.format('.0f'));
