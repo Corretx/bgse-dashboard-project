@@ -1,19 +1,15 @@
 <?php
-
 function connect_to_db() {    
     $host = "localhost";
     $dbuser = "root";
     $dbpass = "root";
-    $dbname = "ecommerce";
-
+    $dbname = "Group9db";
     $link = mysql_connect($host,$dbuser,$dbpass);
-
     if (!$link) {
         die('Could not connect: ' . mysql_error());
     }   
     return $link;  
 }
-
 function document_header() {
     $str = <<<MY_MARKER
 <link rel='stylesheet' href='files/nv.d3.css' type='text/css'>
@@ -30,11 +26,9 @@ function document_header() {
 MY_MARKER;
     echo $str;
 }
-
 function query_and_print_table($query,$title) {
     // Perform Query
     $result = mysql_query($query);
-
     // Check result
     // This shows the actual query sent to MySQL, and the error. Useful for debugging.
     if (!$result) {
@@ -42,7 +36,6 @@ function query_and_print_table($query,$title) {
         $message .= 'Whole query: ' . $query;
         die($message);
     }
-
     // Use result
     // Attempting to print $result won't allow access to information in the resource
     // One of the mysql result functions must be used
@@ -55,7 +48,6 @@ function query_and_print_table($query,$title) {
         echo "<th>" . $col . "</th>";
     }
     echo "</tr></thead>";
-
     // Write rows
     mysql_data_seek($result, 0);
     while ($row = mysql_fetch_assoc($result)) {
@@ -66,23 +58,18 @@ function query_and_print_table($query,$title) {
         echo "</tr>";
     }
     echo "</table>";
-
     // Free the resources associated with the result set
     // This is done automatically at the end of the script
     mysql_free_result($result);
 }
-
-
 function query_and_print_graph($query,$title,$ylabel) {
     $id = "graph" . $GLOBALS['graphid'];
     $GLOBALS['graphid'] = $GLOBALS['graphid'] + 1;
     
     echo "<h2>" . $title . "</h2>";
     echo PHP_EOL,'<div id="'. $id . '"><svg style="height:300px"></svg></div>',PHP_EOL;
-
     // Perform Query
     $result = mysql_query($query);
-
     // Check result
     // This shows the actual query sent to MySQL, and the error. Useful for debugging.
     if (!$result) {
@@ -90,7 +77,6 @@ function query_and_print_graph($query,$title,$ylabel) {
         $message .= 'Whole query: ' . $query;
         die($message);
     }
-
     $str = "<script type='text/javascript'>
         function " . $id . "Chart() {";
     $str = $str . <<<MY_MARKER
@@ -109,7 +95,6 @@ MY_MARKER;
           .call(chart);";
     $str = $str . <<<MY_MARKER
       nv.utils.windowResize(chart.update);
-
       return chart;
     });
 }    
@@ -121,25 +106,20 @@ MY_MARKER;
     {
       key:"; 
     $str = $str . '"' . $title . '", values: [';
-
     while ($row = mysql_fetch_array($result)) {
         $str = $str . '{ "label":"' . $row[0] . '","value":' . $row[1] . '},' . PHP_EOL;
     }    
     $str = $str . '] } ] }</script>';
     echo $str;
-
 }
-
 function query_and_print_series($query,$title,$label) {
     $id = "graph" . $GLOBALS['graphid'];
     $GLOBALS['graphid'] = $GLOBALS['graphid'] + 1;
     
     echo "<h2>" . $title . "</h2>";
     echo PHP_EOL,'<div align="center" id="'. $id . '"><svg style="height:500px; width:800px"></svg></div>',PHP_EOL;
-
     // Perform Query
     $result = mysql_query($query);
-
     // Check result
     // This shows the actual query sent to MySQL, and the error. Useful for debugging.
     if (!$result) {
@@ -147,7 +127,6 @@ function query_and_print_series($query,$title,$label) {
         $message .= 'Whole query: ' . $query;
         die($message);
     }
-
     $str = "<script type='text/javascript'>
         function " . $id . "Chart() {";
     $str = $str . <<<MY_MARKER
@@ -160,29 +139,23 @@ function query_and_print_series($query,$title,$label) {
                 .showYAxis(true)        //Show the y-axis
                 .showXAxis(true)        //Show the x-axis
     ;
-
     chart.xAxis     //Chart x-axis settings
       .axisLabel('X')
       .tickFormat(d3.format(',r'));
-
     chart.yAxis     //Chart y-axis settings
       .axisLabel('Y')
       .tickFormat(d3.format('.02f'));
-
 MY_MARKER;
-
     $str = $str . PHP_EOL . 'chart.yAxis.axisLabel("x").axisLabelDistance(30)';
     $str = $str . PHP_EOL . "d3.select('#" . $id . " svg')
           .datum(" . $id . "Data())
           .call(chart);";
     $str = $str . <<<MY_MARKER
       nv.utils.windowResize(chart.update);
-
       return chart;
     });
 }    
 MY_MARKER;
-
     $str = $str . PHP_EOL . $id . "Chart();" . PHP_EOL;
     $str = $str . PHP_EOL . "mycharts.push(". $id . "Chart)" . PHP_EOL;
     $str = $str . PHP_EOL . "function " . $id . "Data() { 
@@ -191,7 +164,6 @@ MY_MARKER;
     while ($row = mysql_fetch_array($result)) {
         $str = $str . "fx.push({x:" . $row[0] . ", y:" . $row[1] ."}); " . PHP_EOL;
     }    
-
     $str = $str . "
     //Line chart data should be sent as an array of series objects.
     return [
@@ -203,10 +175,67 @@ MY_MARKER;
     }
   ];
 }</script>";
-
     echo $str;
-
 }
 
+
+function query_and_print_graph_multibar($query,$query2,$title,$ylabel) {
+    $id = "graph" . $GLOBALS['graphid'];
+    $GLOBALS['graphid'] = $GLOBALS['graphid'] + 1;
+    
+    echo "<h2>" . $title . "</h2>";
+    echo PHP_EOL,'<div id="'. $id . '"><svg style="height:300px"></svg></div>',PHP_EOL;
+    // Perform Query
+    $result = mysql_query($query);
+    $result2 = mysql_query($query2);
+    // Check result
+    // This shows the actual query sent to MySQL, and the error. Useful for debugging.
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysql_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
+    $str = "<script type='text/javascript'>
+        function " . $id . "Chart() {";
+    $str = $str . <<<MY_MARKER
+   nv.addGraph(function() {
+    var chart = nv.models.multiBarChart()
+        .x(function(d) { return d.label })
+        .y(function(d) { return d.value })
+        .showControls(false)
+    chart.yAxis     //Chart y-axis settings
+      .axisLabel('Patients')
+      .tickFormat(d3.format('.0f'));
+    
+MY_MARKER;
+    $str = $str . PHP_EOL . 'chart.yAxis.axisLabel("' . $ylabel . '").axisLabelDistance(30)';
+    $str = $str . PHP_EOL . "d3.select('#" . $id . " svg')
+          .datum(" . $id . "Data())
+          .call(chart);";
+    $str = $str . <<<MY_MARKER
+      nv.utils.windowResize(chart.update);
+      return chart;
+    });
+}    
+MY_MARKER;
+    $str = $str . PHP_EOL . $id . "Chart();" . PHP_EOL;
+    $str = $str . PHP_EOL . "mycharts.push(". $id . "Chart)" . PHP_EOL;
+    $str = $str . PHP_EOL . "function " . $id . 'Data() {
+ return  [ 
+    {
+      "key": "Female", color: "#e1aebb"'; 
+    $str = $str . ', values: [';
+    while ($row = mysql_fetch_array($result)) {
+        $str = $str . '{ "label":"' . $row[0] . '","value":' . $row[1] . '},' . PHP_EOL;
+    }
+    $str = $str . '] }, {
+    "key": "Male", color: "#aecbe1" ';
+    $str = $str . ', values: [';
+    while ($row = mysql_fetch_array($result2)) {
+        $str = $str . '{ "label":"' . $row[0] . '","value":' . $row[1] . '},' . PHP_EOL;
+    }
+    $str = $str . '] } ] }</script>';
+    echo $str;
+}
 
 ?>

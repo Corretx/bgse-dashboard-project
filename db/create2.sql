@@ -1,9 +1,4 @@
--- Group 9 - Comparative Efectiveness Research
-
-
--- create the database
-
-DROP DATABASE Group9db;
+DROP DATABASE IF EXISTS Group9db;
 CREATE DATABASE Group9db;
 
 -- select the database
@@ -95,13 +90,13 @@ PRIMARY KEY (Cohort_Variable_Key)
 
 );
 
-drop table Cohort_Outcome;
+
 CREATE TABLE Cohort_Outcome (
 
 Cohort_Outcome_Key INT(11) NOT NULL auto_increment,
 Cohort_Pt_Key INT(11) NOT NULL,
 Outcome_Key INT(11) NOT NULL,
-Variable_Value NVARCHAR(10) NOT NULL,
+Outcome_Value NVARCHAR(10) NOT NULL,
 
 PRIMARY KEY (Cohort_Outcome_Key)
 
