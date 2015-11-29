@@ -25,22 +25,6 @@
     query_and_print_graph($query,$title,"Euros");
 ?>
 
-<?php
-    // Total Revenue by product
-    
-    $query = "Select gender, age,count(*) as total  from Group9db.Cohort_Patient where Drug_Name = 'Novolog' group by gender,age";
-    $title = "Distribution by age";
-    query_and_print_graph_multibar($query,$title,"People");
-?>
-
-
-<?php
-    // Total Revenue by product
-    
-    $query = "Select age,gender,count(*) as total from Group9db.Cohort_Patient where Drug_Name = 'Novolog' group by age,gender";
-    $title = "Distribution by age";
-    query_and_print_table($query,$title,"People");
-?>
 
 <?php
     // Total Revenue by product
