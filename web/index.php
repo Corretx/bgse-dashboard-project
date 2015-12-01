@@ -55,6 +55,8 @@ function show_content(optionsId) {
 		<a id="data_link" href="#" onclick="show_content('data'); update_data_charts(); return false;">Data</a> &middot;
 		<a id="analysis_link" href="#" onclick="show_content('analysis'); return false;">Analysis</a> 
 	</div>
+	
+	
 
 	<div id="main">
 
@@ -69,6 +71,8 @@ function show_content(optionsId) {
 			<input type="radio" name="sex" value="male"> Male
 			<br>
 			<input type="radio" name="sex" value="female"> Female
+			<br><br>
+  			<input type="submit" value="Submit">
 			</form>
 						
 		</div>	
