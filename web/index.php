@@ -76,6 +76,15 @@ function show_content(optionsId) {
 					<li> First we have implemented a simple recommendation system, based on the <b><a href="http://www.wikipedia.org/wiki/Apriori_algorithm" target="_blank">Apriori algorithm.</a></b>. This algorithm analyses existing transaction recorded in the database and develops associative rules between products, based on the frequency of them being purchased together. The output of the algorithm is a set of rules which link a set of two or more products (which are assumed to be already in the customer's basket) with an additional product that the customer is recommended to buy.</li>
 					<li> To address the second part of the challenge, i.e. to identify the company's "most interesting revenue generating customers", we have carried out a LASSO Regression, on the subset of the 20 top clients measured by total revenue, regressing each customers purchases (measure in quantities) on the total revenues associated to each product. We have used the results of this regression to rank customers according to their <b>percentage monetary contribution</b> to total revenues from buying one additional product. We have used a <b>LASSO approach</b> to identify customers for personalised marketing campaigns, allowing the company to move away from a massive and unrestricted campaign to a more efficient use of marketing resources.</li>
 				</ul>
+			<form>
+				First name:<br>
+				<input type="text" name="firstname">
+				<br>
+				Last name:<br>
+				<input type="text" name="lastname">
+				<br><br>
+				<input type="submit">
+			</form>
 						
 		</div>	
 
