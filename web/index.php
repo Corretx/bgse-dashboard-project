@@ -52,7 +52,7 @@ function show_content(optionsId) {
 
 	<div id="menu">
 		<a id="home_link" href="#" class="active" onclick="show_content('home'); return false;">Home</a> &middot;
-		<a id="data_link" href="#" onclick="show_content('data'); update_data_charts(); return false;">Data</a> &middot;
+		<a id="data_link" href="/data_and_analysis.php" onclick="show_content('data'); update_data_charts(); return false;">Data</a> &middot;
 		<a id="analysis_link" href="#" onclick="show_content('analysis'); return false;">Analysis</a> 
 	</div>
 	
