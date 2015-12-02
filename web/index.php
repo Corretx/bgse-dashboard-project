@@ -19,6 +19,7 @@ function show(element) {
 	element.style.display = '';
     }
 }
+
 /**
  * Given an element, or an element ID, set its style's display property
  * to 'none'
@@ -32,10 +33,12 @@ function hide(element) {
 	element.style.display = 'none';
     }
 }
+
 function show_content(optionsId) {
 	var ids = new Array('home','data','analysis');
 	show(optionsId);
 	document.getElementById(optionsId + '_link').className = 'active';
+	
 	for (var i = 0; i < ids.length; i++)
 	{
 	    if (ids[i] == optionsId) continue;
