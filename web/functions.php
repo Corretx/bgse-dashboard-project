@@ -15,6 +15,7 @@ function document_header() {
 <link rel='stylesheet' href='files/nv.d3.css' type='text/css'>
 <script src='files/d3.v2.js' type='text/javascript' ></script>
 <script src='files/nv.d3.js' type='text/javascript' ></script>
+<script src="http://www.d3plus.org/js/d3plus.js"></script>
 <script>
     var mycharts = [];
     function update_data_charts() {
