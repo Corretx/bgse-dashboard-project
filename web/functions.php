@@ -3,7 +3,7 @@ function connect_to_db() {
     $host = "localhost";
     $dbuser = "root";
     $dbpass = "root";
-    $dbname = "ecommerce";
+    $dbname = "Group9db";
     $link = mysql_connect($host,$dbuser,$dbpass);
     if (!$link) {
         die('Could not connect: ' . mysql_error());
