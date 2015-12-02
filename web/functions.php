@@ -5,17 +5,20 @@ function connect_to_db() {
     $dbpass = "root";
     $dbname = "Group9db";
     $link = mysql_connect($host,$dbuser,$dbpass);
+    
     if (!$link) {
         die('Could not connect: ' . mysql_error());
     }   
+    
     return $link;  
 }
+
 function document_header() {
     $str = <<<MY_MARKER
 <link rel='stylesheet' href='files/nv.d3.css' type='text/css'>
 <script src='files/d3.v2.js' type='text/javascript' ></script>
 <script src='files/nv.d3.js' type='text/javascript' ></script>
-<script src="http://www.d3plus.org/js/d3plus.js"></script>
+<script src='files/d3plus.js' type='text/javascript' ></script>
 <script>
     var mycharts = [];
     function update_data_charts() {
