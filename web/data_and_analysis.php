@@ -33,11 +33,15 @@
 ?>
 
 
+	</div>
+	
+	<div id="analysis" style="display: none">
+	<h2>Analysis</h2>
+	
+	<p>Below we show the top 20 product recommendation rules identified by the <b>Apriori algorithm</b>. The table can be read as follows: for each rule, the left-hand side shows a potential basket that the customer has put together, while the right-hand side shows the additional product that could be purchased to "complete that basket".</p>
 
-
-
-
-		</div>
+	<p>For example, the first rule indicates that a customer that has already added dried applies and sild (herring) to her basket, would be recommended gorgonzola cheese <em>(note: it sounds disgusting but the customer is always right!)</em> The recommendations are based on the analysis of historical transaction already stored in the database.</p>
+	</div>		
 <?php
 	// Close connection
 	mysql_close($link);
