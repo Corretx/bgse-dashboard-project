@@ -275,4 +275,57 @@ function query_and_print_table2($query,$title) {
     mysql_free_result($result);
 }
 
+function treemap($query,$title,$label) {
+    $id = "graph" . $GLOBALS['graphid'];
+    $GLOBALS['graphid'] = $GLOBALS['graphid'] + 1;
+    
+    echo "<h2>" . $title . "</h2>";
+    echo PHP_EOL,'<div align="center" id="'. $id . '"><svg style="height:500px; width:800px"></svg></div>',PHP_EOL;
+    // Perform Query
+    $result = mysql_query($query);
+    // Check result
+    // This shows the actual query sent to MySQL, and the error. Useful for debugging.
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysql_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
+    $str = "<script type='text/javascript'>
+        function " . $id . "Chart() {";
+    $str = $str . <<<MY_MARKER
+    nv.addGraph(function() {
+    var chart = d3plus.viz()
+        .container("#viz")
+        .data(Data())
+        .type("tree_map")
+        .id("name")
+        .size("value")
+        .color("growth")
+        .draw()
+      return chart;
+    });
+}    
+MY_MARKER;
+    $str = $str . PHP_EOL . $id . "Chart();" . PHP_EOL;
+    $str = $str . PHP_EOL . "mycharts.push(". $id . "Chart)" . PHP_EOL;
+    $str = $str . PHP_EOL . "function " . $id . "Data() { 
+    var fx = [];";
+  
+    while ($row = mysql_fetch_array($result)) {
+        $str = $str . "fx.push({value:" . $row[0] . ", name:" . $row[1] .", growth:" . $row[2] ."}); " . PHP_EOL;
+    }    
+    $str = $str . "
+    //Line chart data should be sent as an array of series objects.
+    return [
+    {
+      values: fx,
+      key: '" . $label . " ',
+      color: '#7777ff',
+      area: true      //area - set to true if you want this line to turn into a filled area chart.
+    }
+  ];
+}</script>";
+    echo $str;
+}
+
 ?>
