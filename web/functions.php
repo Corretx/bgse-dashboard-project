@@ -15,6 +15,7 @@ function document_header() {
 <link rel='stylesheet' href='files/nv.d3.css' type='text/css'>
 <script src='files/d3.v2.js' type='text/javascript' ></script>
 <script src='files/nv.d3.js' type='text/javascript' ></script>
+<script src='files/d3plus.js' type='text/javascript' ></script>
 <script>
     var mycharts = [];
     function update_data_charts() {
@@ -179,6 +180,44 @@ MY_MARKER;
 }
 
 
+function query_and_print_table2($query,$title) {
+    // Perform Query
+    $result = mysql_query($query);
+    // Check result
+    // This shows the actual query sent to MySQL, and the error. Useful for debugging.
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysql_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
+    // Use result
+    // Attempting to print $result won't allow access to information in the resource
+    // One of the mysql result functions must be used
+    // See also mysql_result(), mysql_fetch_array(), mysql_fetch_row(), etc.
+    echo "<h2>" . $title . "</h2>";
+    echo "<table align='center' border='1' bordercolor='#B2C3CE'>";
+    echo "<thead><tr></tr>";
+    $row = mysql_fetch_assoc($result);
+    foreach ($row as $col => $value) {                
+        echo "<th bgcolor='#B2C3CE'> . $col . "</th>";
+    }
+    echo "</tr></thead>";
+    // Write rows
+    mysql_data_seek($result, 0);
+    while ($row = mysql_fetch_assoc($result)) {
+        echo "<tr>";
+        foreach ($row as $e) {                
+            echo "<td>" . $e . "</td>";
+        }
+        echo "</tr>";
+    }
+    echo "</table>";
+    // Free the resources associated with the result set
+    // This is done automatically at the end of the script
+    mysql_free_result($result);
+}
+
+
 function query_and_print_graph_multibar($query,$query2,$title,$ylabel) {
     $id = "graph" . $GLOBALS['graphid'];
     $GLOBALS['graphid'] = $GLOBALS['graphid'] + 1;
@@ -237,5 +276,60 @@ MY_MARKER;
     $str = $str . '] } ] }</script>';
     echo $str;
 }
+
+function treemap($query,$title,$label) {
+    $id = "graph" . $GLOBALS['graphid'];
+    $GLOBALS['graphid'] = $GLOBALS['graphid'] + 1;
+    
+    echo "<h2>" . $title . "</h2>";
+    echo PHP_EOL,'<div align="center" id="'. $id . '"><svg style="height:500px; width:800px"></svg></div>',PHP_EOL;
+    // Perform Query
+    $result = mysql_query($query);
+    // Check result
+    // This shows the actual query sent to MySQL, and the error. Useful for debugging.
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysql_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
+    $str = "<script type='text/javascript'>
+        function " . $id . "Chart() {";
+    $str = $str . <<<MY_MARKER
+    nv.addGraph(function() {
+    var chart = d3plus.viz()
+        .container("#viz")
+        .data(Data())
+        .type("tree_map")
+        .id("name")
+        .size("value")
+        .color("growth")
+        .draw()
+      return chart;
+    });
+}    
+MY_MARKER;
+    $str = $str . PHP_EOL . $id . "Chart();" . PHP_EOL;
+    $str = $str . PHP_EOL . "mycharts.push(". $id . "Chart)" . PHP_EOL;
+    $str = $str . PHP_EOL . "function " . $id . "Data() { 
+    var fx = [];";
+  
+    while ($row = mysql_fetch_array($result)) {
+        $str = $str . "fx.push({value:" . $row[0] . ", name:" . $row[1] .", growth:" . $row[2] ."}); " . PHP_EOL;
+    }    
+    $str = $str . "
+    //Line chart data should be sent as an array of series objects.
+    return [
+    {
+      values: fx,
+      key: '" . $label . " ',
+      color: '#7777ff',
+      area: true      //area - set to true if you want this line to turn into a filled area chart.
+    }
+  ];
+}</script>";
+    echo $str;
+}
+
+
 
 ?>

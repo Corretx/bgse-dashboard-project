@@ -38,7 +38,7 @@ function show_content(optionsId) {
 	var ids = new Array('home','data','analysis');
 	show(optionsId);
 	document.getElementById(optionsId + '_link').className = 'active';
-
+	
 	for (var i = 0; i < ids.length; i++)
 	{
 	    if (ids[i] == optionsId) continue;
@@ -48,7 +48,7 @@ function show_content(optionsId) {
 }
 </script>
 <body>
-	<div id="header"><h1> Group 9 - Comparative Effectiveness Research</h1></div>
+	<div id="header"><h1>Product recommendation and customer analysis</h1></div>
 
 	<div id="menu">
 		<a id="home_link" href="#" class="active" onclick="show_content('home'); return false;">Home</a> &middot;
