@@ -7,7 +7,7 @@ cmd=$1
 user=`grep dbuser service.conf | cut -f2 -d' '`
 pswd=`grep dbpswd service.conf | cut -f2 -d' '`
 
-target_dir='/var/www/html'
+target_dir='/Library/WebServer/Documents'
 #target_dir=$HOME/public_html
 
 case $cmd in
@@ -15,9 +15,15 @@ case $cmd in
 install)
 	echo "Installing"
 
-	mysql -u $user -p$pswd < db/ecommerce.sql
-	mysql -u $user -p$pswd < data/ecommerce-dump.sql
-	mysql -u $user -p$pswd < analysis/Customers_by_product.sql
+	echo "Creating tables"
+	mysql -u $user -p$pswd < db/create.sql
+
+	echo "Inserting values"
+	mysql -u $user -p$pswd < db/inserts.sql
+
+	echo "Running procedures"
+	mysql -u $user -p$pswd < analysis/cohorts.sql
+	
 
 	mkdir -p "$target_dir/MyApp"
 	cp -rf web/* "$target_dir/MyApp"
@@ -28,7 +34,7 @@ install)
 uninstall)
 	echo "Uninstalling"
 	
-	mysql -u $user -p$pswd -e "DROP DATABASE ecommerce;" 
+	mysql -u $user -p$pswd -e "DROP DATABASE Group9db;" 
 	rm -rf "target_dir/MyApp"
 
 	echo "done!"
@@ -39,8 +45,6 @@ run)
 	R CMD BATCH analysis/analysis.R 
 	cat analysis.Rout
 	rm analysis.Rout
-	cp web/categories_network.png "$target_dir/MyApp"
-
 	;;
 
 *)

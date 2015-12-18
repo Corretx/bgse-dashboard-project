@@ -1,4 +1,4 @@
-# BGSE Dashboard Project: AWESOME Product Recommendation and Customer Analysis
+# BGSE Dashboard Project: Product Recommendation and Customer Analysis
 
 ### Overview
 
