@@ -7,7 +7,7 @@ cmd=$1
 user=`grep dbuser service.conf | cut -f2 -d' '`
 pswd=`grep dbpswd service.conf | cut -f2 -d' '`
 
-target_dir='/Library/WebServer/Documents'
+target_dir='/var/www/html'
 #target_dir=$HOME/public_html
 
 case $cmd in
