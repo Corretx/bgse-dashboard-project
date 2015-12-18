@@ -1,7 +1,7 @@
 <?php
 
 function connect_to_db() {    
-    $host = "127.0.0.1";
+    $host = "localhost";
     $dbuser = "root";
     $dbpass = "root";
     $dbname = "Group9db";
