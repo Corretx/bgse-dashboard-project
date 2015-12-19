@@ -42,7 +42,7 @@ uninstall)
 
 run)
 	echo "Running"
-	R CMD BATCH analysis/analysis.R 
+	R CMD BATCH analysis/AttributeImportance.R 
 	cat analysis.Rout
 	rm analysis.Rout
 	;;
