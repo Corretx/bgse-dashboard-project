@@ -2717,7 +2717,7 @@
         return mu + sig * x * Math.sqrt(-2 * Math.log(r) / r);
       };
     },
-    logNormal: function(mu, σ) {
+    logNormal: function(mu, sig) {
       var n = arguments.length;
       if (n < 2) sig = 1;
       if (n < 1) mu = 0;
