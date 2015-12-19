@@ -2703,10 +2703,10 @@
     return [ a, c ];
   };
   d3.random = {
-    normal: function(µ, σ) {
+    normal: function(mu, sig) {
       var n = arguments.length;
-      if (n < 2) σ = 1;
-      if (n < 1) µ = 0;
+      if (n < 2) sig = 1;
+      if (n < 1) mu = 0;
       return function() {
         var x, y, r;
         do {
@@ -2714,16 +2714,16 @@
           y = Math.random() * 2 - 1;
           r = x * x + y * y;
         } while (!r || r > 1);
-        return µ + σ * x * Math.sqrt(-2 * Math.log(r) / r);
+        return mu + sig * x * Math.sqrt(-2 * Math.log(r) / r);
       };
     },
-    logNormal: function(µ, σ) {
+    logNormal: function(mu, σ) {
       var n = arguments.length;
-      if (n < 2) σ = 1;
-      if (n < 1) µ = 0;
+      if (n < 2) sig = 1;
+      if (n < 1) mu = 0;
       var random = d3.random.normal();
       return function() {
-        return Math.exp(µ + σ * random());
+        return Math.exp(mu + sig * random());
       };
     },
     irwinHall: function(m) {
