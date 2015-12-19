@@ -1,13 +1,9 @@
 <title>Comparative Effectiveness Research</title>
-<link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="stylesheet" type="text/css" href="skeleton.css" />
 <script src="files/display.js" type="text/javascript"></script>
-<<<<<<< HEAD
-=======
 <script src='files/jquery-1.11.3.js' type='text/javascript' ></script>
->>>>>>> 1fb9a529f5362152c4697bc36225d771a5ecfbc1
 
 <div id="header"><h1>Comparative Effectiveness Research</h1></div>
-
 
 <div id="menu">
     <a id="home_link" href="index.php"  onclick="show_content('home'); return false;">Home</a> &middot;
@@ -27,7 +23,7 @@
 ?>
 
 
-    <form name="search" method="POST" action = "analysis.php">
+    <form name="search" method="POST" action = "analysis.php" align = "center">
 
         <select name="outcome">
             <option value="">Outcome</option>
@@ -53,10 +49,6 @@
    $result = system($cmd);
 ?>
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 1fb9a529f5362152c4697bc36225d771a5ecfbc1
 <?php
     // Patients for Humalog
     
@@ -66,12 +58,8 @@
             $query .= "{$search_term}";
     }
     else $query .= "101";
-    $title = "Cluster";
-<<<<<<< HEAD
-    query_and_print_table2($query,$title);
-=======
+    $title = "Suggested Association Matrix";
     cluster_table($query,$title);
->>>>>>> 1fb9a529f5362152c4697bc36225d771a5ecfbc1
 ?>
 
 <?php

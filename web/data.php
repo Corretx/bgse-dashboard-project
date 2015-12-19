@@ -1,9 +1,8 @@
 <title>Comparative Effectiveness Research</title>
-<link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="stylesheet" type="text/css" href="skeleton.css" />
 <script src="files/display.js" type="text/javascript"></script>
 
 <div id="header"><h1>Comparative Effectiveness Research</h1></div>
-
 
 <div id="menu">
     <a id="home_link" href="index.php"  onclick="show_content('home'); return false;">Home</a> &middot;
@@ -22,9 +21,8 @@
 	$link = connect_to_db();
 ?>
 
-
 	<!-- Create the filters -->
-	<form name="search" method="POST" action = "data.php">
+	<form name="search" method="POST" action = "data.php" align = "center">
     
         <select name="gender">
             <option value="">Gender</option>
@@ -108,6 +106,22 @@
 ?>
 
 <?php
+    $query1 = "DROP TABLE IF EXISTS Group9db.Population_in_Selection";
+    if (isset($_POST['submit'])) {
+        $query = "Create table Group9db.Population_in_Selection as Select * from Group9db.Cohort_Patient Where ";
+        $query .= $where;
+    }
+    else $query = "Create table Group9db.Population_in_Selection as Select * from Group9db.Cohort_Patient";
+    create_table($query1,$query);
+?>
+
+<?php
+    $query1 = "select count(*) from Group9db.Cohort_Patient";
+    $query2 = "Select count(*) from Group9db.Population_in_Selection";
+    table_data($query1, $query2);
+?>
+
+<?php
     // Patients for Novolog
     
     $query1 = "Select Age, count(Gender) as Gender From Group9db.Cohort_Patient Where Drug_Name = 'Novolog' and Gender = 'female'";    
@@ -118,7 +132,7 @@
     }
     $query1 .= " Group by Age";
     $query2 .= " Group by Age";
-    $title = "Novolog patients";
+    $title = "Age & Gender distribution for Novolog";
     query_and_print_graph_multibar($query1,$query2,$title,"Patients");
 ?>
 
@@ -126,53 +140,25 @@
     // Patients for Humalog
     
     $query1 = "Select Age, count(Gender) as Gender From Group9db.Cohort_Patient Where Drug_Name = 'Humalog' and Gender = 'female'";    
-    $query2 = "Select Age, count(Gender) as Gender From Group9db.Cohort_Patient Where Drug_Name = 'Novolog' and Gender = 'male'";
+    $query2 = "Select Age, count(Gender) as Gender From Group9db.Cohort_Patient Where Drug_Name = 'Humalog' and Gender = 'male'";
     if (isset($_POST['submit'])) {
         $query1 .= " and ".$where;
         $query2 .= " and ".$where;
     } 
     $query1 .= " Group by Age";
     $query2 .= " Group by Age";
-    $title = "Humalog patients";
+    $title = "Age & Gender distribution for Humalog";
     query_and_print_graph_multibar($query1,$query2,$title,"Patients");
 ?>
 
 <?php
-	$query1 = "DROP TABLE IF EXISTS Group9db.Population_in_Selection";
-    if (isset($_POST['submit'])) {
-    	$query = "Create table Group9db.Population_in_Selection as Select * from Group9db.Cohort_Patient Where ";
-    	$query .= $where;
-    }
-    else $query = "Create table Group9db.Population_in_Selection as Select * from Group9db.Cohort_Patient";
-    create_table($query1,$query);
-?>
 
-
-<?php
-    // Patients for Humalog
-    
-    $query = "Select Age, Count(Age) from Group9db.Population_in_Selection group by Age";
-    $title = "Auxilary table";
-    query_and_print_table2($query,$title);
-?>
-
-<?php
-    // 
-    
-<<<<<<< HEAD
     $query = "Select Count(Age), Race, Count(Age) from Group9db.Population_in_Selection";
     $title = "Tree map";
-    treemap($query,$title,"hola");
+   // treemap($query,$title,"hola");
 ?>
 
- <?php
-   $rEngine = "/usr/local/bin/Rscript --vanilla ";
-   $rScript = "~/Documents/MyApp/analysis/Clustering.R";
-
-   $cmd = sprintf("%s %s", $rEngine, $rScript); #  >&1 2>&1
-   $result = system($cmd);
-?>
-=======
+<?php
     $query = "Select Race, Count(*) from Group9db.Population_in_Selection group by Race";
     $title = "Tree map";
     $result = treemapdata($query,$title,"hola");
@@ -193,7 +179,6 @@ var chart = d3plus.viz()
         .draw()
 
 </script>
->>>>>>> 1fb9a529f5362152c4697bc36225d771a5ecfbc1
 
 
 <?php

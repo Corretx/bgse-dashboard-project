@@ -7,7 +7,7 @@ cmd=$1
 user=`grep dbuser service.conf | cut -f2 -d' '`
 pswd=`grep dbpswd service.conf | cut -f2 -d' '`
 
-target_dir='/var/www/html'
+target_dir='/Library/WebServer/Documents'
 #target_dir=$HOME/public_html
 
 case $cmd in
@@ -42,9 +42,8 @@ uninstall)
 
 run)
 	echo "Running"
-	R CMD BATCH analysis/AttributeImportance.R 
-	cat analysis.Rout
-	rm analysis.Rout
+	R CMD BATCH analysis/AttributeImportance.R
+	rm AttributeImportance.Rout
 	;;
 
 *)

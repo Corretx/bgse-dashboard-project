@@ -62,34 +62,41 @@ for(j in 1:nout){
   clusterdata <- model.data[,columns]
   colnames(clusterdata)[12] <- 'outcome'
   clusterdata$outcome <- as.numeric(clusterdata$outcome)
+    
+  colnames(clusterdata)[2:11] = merge(data.frame(Variable_Key = colnames(clusterdata)[2:11]),variable_meta,sort=FALSE)$Variable_Name
   
-  colnames(clusterdata)[2:11] = merge(data.frame(Variable_Key = colnames(clusterdata)[2:11]),variable_meta)$Variable_Name
-  
-  clusters <- ddply(clusterdata,1:11,summarize,variance = var(outcome),outcome = mean(outcome), count = length(Drug_Name))
-  
-  clusters <- clusters[which(clusters$count > 1),]
+  clusters <- ddply(clusterdata,1:11,summarize,count = length(Drug_Name),highcount = length(Drug_Name[which(outcome>limit[j])]))
   
   clusters$Humalog <- 0
   clusters$Novolog <- 0
   clusters$Humalog[clusters$Drug_Name == 'Humalog'] <- 1
   clusters$Novolog[clusters$Drug_Name == 'Novolog'] <- 1
   clusters$Drug_Name <- NULL
-  clusters$outcome_hum <- clusters$Humalog*clusters$outcome
-  clusters$outcome_nov <- clusters$Novolog*clusters$outcome
-  clusters$var_hum <- clusters$Humalog*clusters$variance
-  clusters$var_nov <- clusters$Novolog*clusters$variance
-  clusters$outcome <- NULL
+  clusters$n_hum <- clusters$Humalog*clusters$count
+  clusters$n_nov <- clusters$Novolog*clusters$count
+  clusters$n_hum_high <- clusters$Humalog*clusters$highcount
+  clusters$n_nov_high <- clusters$Novolog*clusters$highcount
+  clusters$count <- NULL
+  clusters$highcount <- NULL
   
-  final <- ddply(clusters,1:10,summarise,n_hum = sum(Humalog*count),n_nov = sum(Novolog*count),outcome_hum = sum(outcome_hum),outcome_nov=sum(outcome_nov),var_hum = sum(var_hum),var_nov=sum(var_nov))
+  final <- ddply(clusters,1:10,summarise,n_hum = sum(n_hum),n_nov = sum(n_nov),n_hum_high = sum(n_hum_high),n_nov_high=sum(n_nov_high))
   final <- final[which(final$n_hum > 99 & final$n_nov > 99),]
   
   N <- nrow(final)
-  attach(final)
-  final$zscore <- (outcome_hum - outcome_nov)/(sqrt(var_hum/n_hum + var_nov/n_nov))
+  final$chi.squared <- NA
+  final$p_value <- NA
+  for(i in 1:N){
+    M <- matrix(c(a=final$n_hum[i] - final$n_hum_high[i],b=final$n_nov[i] - final$n_nov_high[i],c=final$n_hum_high[i],d=final$n_nov_high[i]),ncol=2)
+    Xsq <- chisq.test(M)
+    final$chi.squared[i] <- round(Xsq$statistic,4)
+    final$p_value[i] <- round(Xsq$p.value,4)
+  }
+  
   final$Significance <- "Non-Significant"
-  final$Significance[which(abs(final$zscore) > 1.96)] <- "Significant"
-  final <- final[order(abs(final$zscore),decreasing = T),]
-  final[,c(13:17)] <- round(final[,c(13:17)],2)
+  final$Significance[which(abs(final$p_value) < 0.05)] <- "Significant"
+  
+  final <- final[order(final$p_value),]
+  final <- final[-which(final$p_value == 1),]
   
   dbWriteTable(mydb, paste("Matrix",out_list[j],sep="_"), final,overwrite=TRUE,row.names=FALSE)
   

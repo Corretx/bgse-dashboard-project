@@ -4,7 +4,7 @@ library(plyr)
 library(RMySQL)
 
 #Connect to the Database
-mydb = dbConnect(MySQL(), user='root', password='', dbname='Group9db')
+mydb = dbConnect(MySQL(), user='root', password='root', dbname='Group9db')
 
 #Fetch Patient data from the Cohort_Patient table
 rs = dbSendQuery(mydb, "select * from Cohort_Patient")
