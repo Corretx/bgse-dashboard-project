@@ -55,9 +55,9 @@
     $query = "Select * From Group9db.Matrix_OTCME_";
     if (isset($_POST['submit']) && !empty($_POST['outcome'])) {
             $search_term = mysql_real_escape_string($_POST['outcome']);
-            $query .= "{$search_term}";
+            $query .= "{$search_term} LIMIT 20";
     }
-    else $query .= "101";
+    else $query .= "101 LIMIT 20";
     $title = "Suggested Association Matrix";
     cluster_table($query,$title);
 ?>
