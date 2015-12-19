@@ -14,6 +14,13 @@ case $cmd in
 
 install)
 	echo "Installing"
+	
+	echo 'Installing R libraries'
+	mkdir /home/ubuntu/projects/Rlibs
+	chmod 777 /home/ubuntu/projects/Rlibs
+	echo R_LIBS=/home/ubuntu/projects/Rlibs > ~/.Renviron 
+	echo R_LIBS_USER=/home/ubuntu/projects/Rlibs > ~/.Renviron
+	sudo Rscript --vanilla setup.R
 
 	echo "Creating tables"
 	mysql -u $user -p$pswd < db/create.sql
@@ -23,6 +30,10 @@ install)
 
 	echo "Running procedures"
 	mysql -u $user -p$pswd < analysis/cohorts.sql
+	
+	echo "Running R script"
+	R CMD BATCH analysis/AttributeImportance.R
+	rm AttributeImportance.Rout
 	
 
 	mkdir -p "$target_dir/MyApp"
@@ -42,8 +53,6 @@ uninstall)
 
 run)
 	echo "Running"
-	R CMD BATCH analysis/AttributeImportance.R
-	rm AttributeImportance.Rout
 	;;
 
 *)
