@@ -19,7 +19,7 @@ install)
 	chmod 777 /home/ubuntu/projects/Rlibs
 	echo R_LIBS=/home/ubuntu/projects/Rlibs > ~/.Renviron 
 	echo R_LIBS_USER=/home/ubuntu/projects/Rlibs > ~/.Renviron
-	sudo Rscript --vanilla setup.R
+	#sudo Rscript --vanilla setup.R
 
 	echo "Creating tables"
 	mysql -u $user -p$pswd < db/create.sql
@@ -32,7 +32,6 @@ install)
 	
 	echo "Running R script"
 	R CMD BATCH analysis/AttributeImportance.R
-	cat AttributeImportance.Rout
 	rm AttributeImportance.Rout
 	
 
