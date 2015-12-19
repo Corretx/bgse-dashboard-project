@@ -1,15 +1,14 @@
-# BGSE Dashboard Project: Product Recommendation and Customer Analysis
+# Comparative Effectiveness Research
 
 ### Overview
 
-This project implements a product recommendation algorithm and carries out customer analysis using LASSO regression. 
+The aim of the project is to inform health-care decisions by providing evidence on the effectiveness, benefits, and
+harms of different treatment options.
 
-The objectives of the project are:
+In particular, the target users of the dashboard are life-science researchers who want to see the impact of different
+drugs to treat patients belonging to a specific therapeutic area. 
 
-- Develop a set of product recommendation rules, based on the Apriori algorithm
-- Rank customers on the basis of their marginal contribution to revenues.
-
-The ultimate goal is to provide information that can be used by a marketing department to develop more targeted campaigns.
+The ultimate goal is to inform health-care decisions by providing evidence on the effectiveness of different treatment options for a specific medical condition.
 
 ### Structure
 
@@ -39,4 +38,4 @@ The `R` analysis relies on the following packages.
 
 ## Acknowledgments
 
-This project is based on code by: Guglielmo Bartolozzi, Gaston Besanson, Christian Brownlees, Stefano Costantini, Laura Cozma, Jordi Zamora Munt
+This project is based on code by: Guglielmo Bartolozzi, Christian Brownlees, Anna Corretger, Santhosh Narayanan, Guglielmo Pelino
