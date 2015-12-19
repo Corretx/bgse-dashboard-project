@@ -1,7 +1,8 @@
 lib.loc <- '/home/ubuntu/projects/Rlibs'
-require(reshape2,lib.loc)
-require(plyr,lib.loc)
-require(RMySQL,lib.loc)
+library(reshape2,lib.loc)
+library(plyr,lib.loc)
+library(DBI,lib.loc)
+library(RMySQL,lib.loc)
 
 #Connect to the Database
 mydb = dbConnect(MySQL(), user='root', password='root' , dbname='Group9db')
