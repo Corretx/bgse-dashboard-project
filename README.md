@@ -14,9 +14,9 @@ The overarching goal is to provide better evidence to inform decisions made by h
 
 The core of the analysis is contained in these files:
 
-- `Customers_by_product.sql`
-- `data_and_analysis.php`
-- `analysis.R`
+- `AttributeImportance.R`
+- `cohorts.sql`
+- `Cohort_Balancing.R`
 
 Note that some of the key `SQL` queries, to generate the data for the analysis but also to create a network graph, are contained in both the `R` file and the additional `Customers_by_product.sql` file. The latter is called by the setup script after the database is populated.
 
