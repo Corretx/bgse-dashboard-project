@@ -8,11 +8,11 @@ harms of different treatment options.
 In particular, the target users of the dashboard are life-science researchers who want to see the impact of different
 drugs to treat patients belonging to a specific therapeutic area. 
 
-The ultimate goal is to inform health-care decisions by providing evidence on the effectiveness of different treatment options for a specific medical condition.
+The overarching goal is to provide better evidence to inform decisions made by health-care providers
 
 ### Structure
 
-The core of the analysis is contained in these three files:
+The core of the analysis is contained in these files:
 
 - `Customers_by_product.sql`
 - `data_and_analysis.php`
