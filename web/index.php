@@ -11,8 +11,7 @@
 </div>
 
 <div id="main">
-<h3>Comparative Effectiveness Research:</h3>
-<p>Designed to inform health-care decisions by providing evidence on the effectiveness, benefits, and harms of different treatment options. For our analysis we compare two different treatment options for diabetes patients and
+<p>Comparative Effectiveness Research is designed to inform health-care decisions by providing evidence on the effectiveness, benefits, and harms of different treatment options. For our analysis we compare two different treatment options for diabetes patients and
 study their outcomes.</p>
 <ol>We follow the following steps perform this analysis.
   <li>Identify our population of interest.</li>
