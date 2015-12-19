@@ -33,6 +33,7 @@ install)
 	
 	echo "Running R script"
 	R CMD BATCH analysis/AttributeImportance.R
+	cat AttributeImportance.Rout
 	rm AttributeImportance.Rout
 	
 
