@@ -207,7 +207,7 @@
    $rEngine = "/usr/bin/Rscript --vanilla ";
    $rScript = "/var/www/html/MyApp/files/Clustering.R";
 
-   $cmd = sprintf("%s %s", $rEngine, $rScript); #  >&1 2>&1
+   $cmd = sprintf("%s %s 2>&1", $rEngine, $rScript); #  >&1 2>&1
    $result = system($cmd);
 ?>
 
