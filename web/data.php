@@ -125,34 +125,43 @@
 <?php
     // Patients for Novolog
     
-    $query1 = "Select Age, count(Gender) as Gender From Group9db.Cohort_Patient Where Drug_Name = 'Novolog' and Gender = 'female'";    
-    $query2 = "Select Age, count(Gender) as Gender From Group9db.Cohort_Patient Where Drug_Name = 'Novolog' and Gender = 'male'";
+    $query1 = "Select Age, count(*) as Gender From Group9db.Cohort_Patient Where Drug_Name = 'Novolog' and Gender = 'female'";    
+    $query2 = "Select Age, count(*) as Gender From Group9db.Cohort_Patient Where Drug_Name = 'Novolog' and Gender = 'male'";
     if (isset($_POST['submit'])) {
         $query1 .= " and ".$where;
         $query2 .= " and ".$where;
     }
     $query1 .= " Group by Age";
     $query2 .= " Group by Age";
-    $title = "Age & Gender distribution for Novolog";
-    query_and_print_graph_multibar($query1,$query2,$title,"Patients");
+    // query_and_print_graph_multibar($query1,$query2,$title,"Patients");
 ?>
 
 <?php
     // Patients for Humalog
     
-    $query1 = "Select Age, count(Gender) as Gender From Group9db.Cohort_Patient Where Drug_Name = 'Humalog' and Gender = 'female'";    
-    $query2 = "Select Age, count(Gender) as Gender From Group9db.Cohort_Patient Where Drug_Name = 'Humalog' and Gender = 'male'";
+    $query3 = "Select Age, count(*) as Gender From Group9db.Cohort_Patient Where Drug_Name = 'Humalog' and Gender = 'female'";    
+    $query4 = "Select Age, count(*) as Gender From Group9db.Cohort_Patient Where Drug_Name = 'Humalog' and Gender = 'male'";
     if (isset($_POST['submit'])) {
-        $query1 .= " and ".$where;
-        $query2 .= " and ".$where;
+        $query3 .= " and ".$where;
+        $query4 .= " and ".$where;
     } 
-    $query1 .= " Group by Age";
-    $query2 .= " Group by Age";
-    $title = "Age & Gender distribution for Humalog";
-    query_and_print_graph_multibar($query1,$query2,$title,"Patients");
-?> 
-<h3>Treemaps</h3>
+    $query3 .= " Group by Age";
+    $query4 .= " Group by Age";
+    // query_and_print_graph_multibar($query1,$query2,$title,"Patients");
+?>
+<h3>Age & Gender distribution</h3>
+<table align='center'>
+    <th align='center' border-bottom = '0'> Humalog</th>
+    <th align='center' border-bottom = '0'> Novolog</th>
+<tr>
+    <td align='center' border-bottom = '0'> <?php query_and_print_graph_multibar($query1,$query2,"Patients"); ?></td>
+    <td align='center' border-bottom = '0'> <?php query_and_print_graph_multibar($query3,$query4,"Patients"); ?></td>
+</tr>
+</table>
 
+<h3>Treemaps</h3>
+<p><em><b>Size of node:</b> Proportional to the no. of patients</em></p>
+<p><em><b>Colour of node:</b> Average length of stay</em></p>
 
 <?php
     $query1 = "Select Drug_Name, Count(*), round(avg(Outcome_Value),4) from Group9db.Population_in_Selection A, Group9db.Cohort_Outcome B 
@@ -183,14 +192,14 @@
     $title4 = "Prescriptions";
  ?>
 
-<table align='center'>
+<table align='center' border = '0'>
 <tr>
-    <td align='center'> <?php tree($query1,$title1); ?></td>
-    <td align='center'> <?php tree($query2,$title2); ?></td>
+    <td align='center' border-bottom = '0'> <?php tree($query1,$title1); ?></td>
+    <td align='center' border-bottom = '0'> <?php tree($query2,$title2); ?></td>
 </tr>
 <tr>
-    <td align='center'> <?php tree($query3,$title3); ?></td>
-    <td align='center'> <?php tree($query4,$title4); ?></td>
+    <td align='center' border-bottom = '0'> <?php tree($query3,$title3); ?></td>
+    <td align='center' border-bottom = '0'> <?php tree($query4,$title4); ?></td>
 </tr>
 </table>
 

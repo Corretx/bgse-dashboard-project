@@ -32,11 +32,10 @@ MY_MARKER;
     echo $str;
 }
 
-function query_and_print_graph_multibar($query,$query2,$title,$ylabel) {
+function query_and_print_graph_multibar($query,$query2,$ylabel) {
     $id = "graph" . $GLOBALS['graphid'];
     $GLOBALS['graphid'] = $GLOBALS['graphid'] + 1;
-    
-    echo "<h3>" . $title . "</h3>";
+ 
     echo PHP_EOL,'<div id="'. $id . '"><svg style="height:300px"></svg></div>',PHP_EOL;
     // Perform Query
     $result = mysql_query($query);
@@ -55,7 +54,7 @@ function query_and_print_graph_multibar($query,$query2,$title,$ylabel) {
     var chart = nv.models.multiBarChart()
         .x(function(d) { return d.label })
         .y(function(d) { return d.value })
-        .margin({right: 150, left: 150})
+        .margin({right: 60, left: 60})
         .showControls(false)
     chart.yAxis     //Chart y-axis settings
       .axisLabel('Patients')
@@ -115,32 +114,6 @@ function create_table($query,$query2) {
     // mysql_free_result($result);
 }
 
-function treemapdata2($query,$title,$label) {
-    $id = "graph" . $GLOBALS['graphid'];
-    $GLOBALS['graphid'] = $GLOBALS['graphid'] + 1;
-    
-    echo "<h2>" . $title . "</h2>";
-    echo PHP_EOL,'<div align="center" id="'. $id . '"><svg style="height:500px; width:800px"></svg></div>',PHP_EOL;
-    // Perform Query
-    $result = mysql_query($query);
-    // Check result
-    // This shows the actual query sent to MySQL, and the error. Useful for debugging.
-    if (!$result) {
-        $message  = 'Invalid query: ' . mysql_error() . "\n";
-        $message .= 'Whole query: ' . $query;
-        die($message);
-    }
-    $str = $str . '[';
-    while ($row = mysql_fetch_array($result)) {
-        $str = $str . ' { "value":' . $row[1] . ',"name":"' . $row[0] . '","growth":' . $row[1] .'},' . PHP_EOL;
-    }
-    rtrim($str, ", ");
-    $str = $str . ']';
-    
-    return $str;
-}
-
-
 function cluster_table($query,$title) {
     // Perform Query
     $result = mysql_query($query);
@@ -155,9 +128,9 @@ function cluster_table($query,$title) {
     // Attempting to print $result won't allow access to information in the resource
     // One of the mysql result functions must be used
     // See also mysql_result(), mysql_fetch_array(), mysql_fetch_row(), etc.
-    $row = mysql_fetch_assoc($result);
-
-    if(!empty($result)){
+    if(mysql_num_rows($result) < 1){
+      echo "<h2>Insufficient data in selection to generate association matrix for this outcome</h2>";
+    }else{
     echo "<h3>" . $title . "</h3>";
     echo "<table align='center'>";
     echo "<tr>";
@@ -166,8 +139,7 @@ function cluster_table($query,$title) {
     }
     echo "</tr>";
     // Write rows
-   
-      mysql_data_seek($result, 0);
+    mysql_data_seek($result, 0) ;
     // $compta = 0;
     while ($row = mysql_fetch_assoc($result)) {
         echo "<tr>";
@@ -181,8 +153,6 @@ function cluster_table($query,$title) {
         echo "</tr>";
     }
     echo "</table>";  
-    }else{
-       echo "<h2>Insufficient data in selection to generate association matrix for this outcome</h2>";
     }
     
     // Free the resources associated with the result set
@@ -238,29 +208,6 @@ function table_data($query1, $query2) {
     // This is done automatically at the end of the script
     mysql_free_result($result);
 }
-
-
-function treemapdata($query,$title,$label) {
-    // Perform Query
-    $result = mysql_query($query);
-    // Check result
-    // This shows the actual query sent to MySQL, and the error. Useful for debugging.
-    if (!$result) {
-        $message  = 'Invalid query: ' . mysql_error() . "\n";
-        $message .= 'Whole query: ' . $query;
-        die($message);
-    }
-    $str = $str . "[['Race', 'Global', 'Value (size)', 'Growth (color)'],". PHP_EOL;
-    $str = $str . " ['Global', null, 0, 0],". PHP_EOL;
-    while ($row = mysql_fetch_array($result)) {
-        $str = $str . " ['" . $row[0] . "', 'Global', " . $row[1] . ", " . $row[2] ."], " . PHP_EOL;
-    }
-    rtrim($str, ", ");
-    $str = $str . "]";
-    
-    return $str;
-}
-
 
 function tree($query,$global) {    
     $id = "treemap" . $GLOBALS['graphid'];

@@ -1,7 +1,6 @@
 <title>Comparative Effectiveness Research</title>
 <link rel="stylesheet" type="text/css" href="skeleton.css" />
 <script src="files/display.js" type="text/javascript"></script>
-<script src='files/jquery-1.11.3.js' type='text/javascript' ></script>
 
 <div id="header"><h1>Comparative Effectiveness Research</h1></div>
 
@@ -38,6 +37,7 @@
         
         <input type="submit" name="submit" value="Apply">
     </form>
+
 
 <?php
     // Patients for Humalog
