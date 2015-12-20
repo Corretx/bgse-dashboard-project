@@ -205,7 +205,7 @@
 
 <?php
    $rEngine = "/usr/bin/Rscript --vanilla ";
-   $rScript = "~/projectss/bgse-dashboard-project-group9/analysis/Clustering.R";
+   $rScript = "~/projects/bgse-dashboard-project-group9/analysis/Clustering.R";
 
    $cmd = sprintf("%s %s", $rEngine, $rScript); #  >&1 2>&1
    $result = system($cmd);
