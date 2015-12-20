@@ -1,4 +1,4 @@
-lib.loc <- '/home/ubuntu/projects/Rlibs'
+lib.loc <- '/var/www/html/MyApp/Rlibs'
 require(reshape2,lib.loc = lib.loc)
 require(plyr,lib.loc = lib.loc)
 require(RMySQL,lib.loc = lib.loc)
