@@ -1,4 +1,4 @@
-lib.loc <- '/Library/WebServer/Documents/MyApp/library'
+lib.loc <- '/home/ubuntu/projects/Rlibs'
 require(reshape2,lib.loc)
 require(plyr,lib.loc)
 require(RMySQL,lib.loc)
