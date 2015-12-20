@@ -204,7 +204,7 @@
 </table>
 
 <?php
-   $rEngine = "/usr/local/bin/Rscript --vanilla ";
+   $rEngine = "/usr/bin/Rscript --vanilla ";
    $rScript = "~/projectss/bgse-dashboard-project-group9/analysis/Clustering.R";
 
    $cmd = sprintf("%s %s", $rEngine, $rScript); #  >&1 2>&1
