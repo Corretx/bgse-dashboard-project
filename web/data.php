@@ -1,6 +1,7 @@
 <title>Comparative Effectiveness Research</title>
 <link rel="stylesheet" type="text/css" href="skeleton.css" />
 <script src="files/display.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 <div id="header"><h1>Comparative Effectiveness Research</h1></div>
 
@@ -149,37 +150,57 @@
     $query2 .= " Group by Age";
     $title = "Age & Gender distribution for Humalog";
     query_and_print_graph_multibar($query1,$query2,$title,"Patients");
-?>
+?> 
+<h3>Treemaps</h3>
+
 
 <?php
+    $query1 = "Select Drug_Name, Count(*), round(avg(Outcome_Value),4) from Group9db.Population_in_Selection A, Group9db.Cohort_Outcome B 
+    where A.Cohort_Pt_Key = B.Cohort_Pt_Key and B.Outcome_Key = 101
+    group by Drug_Name";
+    $title1 = "Drug";
+    $query2 = "Select Race, Count(*), round(avg(Outcome_Value),4) from Group9db.Population_in_Selection A, Group9db.Cohort_Outcome B
+    where A.Cohort_Pt_Key = B.Cohort_Pt_Key and B.Outcome_Key = 101
+    group by Race";
+    $title2 = "Race";
+    $query3 = "Select Variable_Name, Count(*), round(avg(Outcome_Value),4) from Group9db.Population_in_Selection A, Group9db.Cohort_Outcome B,
+    Group9db.Cohort_Variable C, Group9db.Variable_Meta D
+    where A.Cohort_Pt_Key = B.Cohort_Pt_Key 
+    and C.Cohort_Pt_Key = A.Cohort_Pt_Key
+    and B.Outcome_Key = 101
+    and D.Variable_Type = 'Comorbidity'
+    and C.Variable_Key = D.Variable_Key
+    group by Variable_Name";
+    $title3 = "Comorbities";
+    $query4 = "Select Variable_Name, Count(*), round(avg(Outcome_Value),4) from Group9db.Population_in_Selection A, Group9db.Cohort_Outcome B,
+    Group9db.Cohort_Variable C, Group9db.Variable_Meta D
+    where A.Cohort_Pt_Key = B.Cohort_Pt_Key 
+    and C.Cohort_Pt_Key = A.Cohort_Pt_Key
+    and B.Outcome_Key = 101
+    and D.Variable_Type = 'Prescription'
+    and C.Variable_Key = D.Variable_Key
+    group by Variable_Name";
+    $title4 = "Prescriptions";
+ ?>
 
-    $query = "Select Count(Age), Race, Count(Age) from Group9db.Population_in_Selection";
-    $title = "Tree map";
-   // treemap($query,$title,"hola");
-?>
+<table align='center'>
+<tr>
+    <td align='center'> <?php tree($query1,$title1); ?></td>
+    <td align='center'> <?php tree($query2,$title2); ?></td>
+</tr>
+<tr>
+    <td align='center'> <?php tree($query3,$title3); ?></td>
+    <td align='center'> <?php tree($query4,$title4); ?></td>
+</tr>
+</table>
 
 <?php
-    $query = "Select Race, Count(*) from Group9db.Population_in_Selection group by Race";
-    $title = "Tree map";
-    $result = treemapdata($query,$title,"hola");
-    // treemap($query,$title,"hola");
+   $rEngine = "/usr/local/bin/Rscript --vanilla ";
+   $rScript = "~/Documents/MyApp/analysis/Clustering.R";
+
+   $cmd = sprintf("%s %s", $rEngine, $rScript); #  >&1 2>&1
+   $result = system($cmd);
 ?>
-
-<script>
-
-var sample_data = <?php echo $result ; ?>
-
-var chart = d3plus.viz()
-        .container("#viz")
-        .data(sample_data)
-        .type("tree_map")
-        .id("name")
-        .size("value")
-        .color("growth")
-        .draw()
-
-</script>
-
 
 <?php
 	// Close connection

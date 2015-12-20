@@ -21,8 +21,6 @@
 	// Create connection
 	$link = connect_to_db();
 ?>
-
-
     <form name="search" method="POST" action = "analysis.php" align = "center">
 
         <select name="outcome">
@@ -40,14 +38,6 @@
         
         <input type="submit" name="submit" value="Apply">
     </form>
-
- <?php
-   $rEngine = "/usr/bin/Rscript --vanilla ";
-   $rScript = "/home/ubuntu/projects/bgse-dashboard-project-group9/analysis/Clustering.R";
-
-   $cmd = sprintf("%s %s", $rEngine, $rScript); #  >&1 2>&1
-   $result = system($cmd);
-?>
 
 <?php
     // Patients for Humalog

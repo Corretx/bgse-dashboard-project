@@ -1,8 +1,7 @@
-lib.loc <- '/home/ubuntu/projects/Rlibs'
-library(reshape2,lib.loc = lib.loc )
-library(plyr,lib.loc = lib.loc)
-library(DBI,lib.loc = lib.loc)
-library(RMySQL,lib.loc = lib.loc)
+lib.loc <- '/Library/WebServer/Documents/MyApp/library'
+require(reshape2,lib.loc)
+require(plyr,lib.loc)
+require(RMySQL,lib.loc)
 
 #Connect to the Database
 mydb = dbConnect(MySQL(), user='root', password='root' , dbname='Group9db')
@@ -81,7 +80,7 @@ for(j in 1:nout){
   clusters$highcount <- NULL
   
   final <- ddply(clusters,1:10,summarise,n_hum = sum(n_hum),n_nov = sum(n_nov),n_hum_high = sum(n_hum_high),n_nov_high=sum(n_nov_high))
-  final <- final[which(final$n_hum > 99 & final$n_nov > 99),]
+  final <- final[which(final$n_hum > 9 & final$n_nov > 9 & final$n_hum_high > 1 & final$n_nov_high > 1),]
   
   N <- nrow(final)
   final$chi.squared <- NA
@@ -97,8 +96,10 @@ for(j in 1:nout){
   final$Significance[which(abs(final$p_value) < 0.05)] <- "Significant"
   
   final <- final[order(final$p_value),]
-  final <- final[-which(final$p_value == 1),]
+  final <- final[-which(final$p_value > 0.9),]
   
-  dbWriteTable(mydb, paste("Matrix",out_list[j],sep="_"), final,overwrite=TRUE,row.names=FALSE)
+  if(nrow(final) >0){
+    dbWriteTable(mydb, paste("Matrix",out_list[j],sep="_"), final,overwrite=TRUE,row.names=FALSE)
+  }
   
 }

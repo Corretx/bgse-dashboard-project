@@ -1,7 +1,7 @@
 <?php
 
 function connect_to_db() {    
-    $host = "localhost";
+    $host = "127.0.0.1";
     $dbuser = "root";
     $dbpass = "root";
     $dbname = "Group9db";
@@ -30,43 +30,6 @@ function document_header() {
 </script>
 MY_MARKER;
     echo $str;
-}
-
-function query_and_print_table($query,$title) {
-    // Perform Query
-    $result = mysql_query($query);
-    // Check result
-    // This shows the actual query sent to MySQL, and the error. Useful for debugging.
-    if (!$result) {
-        $message  = 'Invalid query: ' . mysql_error() . "\n";
-        $message .= 'Whole query: ' . $query;
-        die($message);
-    }
-    // Use result
-    // Attempting to print $result won't allow access to information in the resource
-    // One of the mysql result functions must be used
-    // See also mysql_result(), mysql_fetch_array(), mysql_fetch_row(), etc.
-    echo "<h2>" . $title . "</h2>";
-    echo "<table align='center'>";
-    echo "<thead><tr></tr>";
-    $row = mysql_fetch_assoc($result);
-    foreach ($row as $col => $value) {                
-        echo "<th>" . $col . "</th>";
-    }
-    echo "</tr></thead>";
-    // Write rows
-    mysql_data_seek($result, 0);
-    while ($row = mysql_fetch_assoc($result)) {
-        echo "<tr>";
-        foreach ($row as $e) {                
-            echo "<td>" . $e . "</td>";
-        }
-        echo "</tr>";
-    }
-    echo "</table>";
-    // Free the resources associated with the result set
-    // This is done automatically at the end of the script
-    mysql_free_result($result);
 }
 
 function query_and_print_graph_multibar($query,$query2,$title,$ylabel) {
@@ -131,43 +94,6 @@ MY_MARKER;
     echo $str;
 }
 
-function query_and_print_table2($query,$title) {
-    // Perform Query
-    $result = mysql_query($query);
-    // Check result
-    // This shows the actual query sent to MySQL, and the error. Useful for debugging.
-    if (!$result) {
-        $message  = 'Invalid query: ' . mysql_error() . "\n";
-        $message .= 'Whole query: ' . $query;
-        die($message);
-    }
-    // Use result
-    // Attempting to print $result won't allow access to information in the resource
-    // One of the mysql result functions must be used
-    // See also mysql_result(), mysql_fetch_array(), mysql_fetch_row(), etc.
-    echo "<h2>" . $title . "</h2>";
-    echo "<table align='center'>";
-    echo "<thead><tr></tr>";
-    $row = mysql_fetch_assoc($result);
-    foreach ($row as $col => $value) {                
-        echo "<th bgcolor='#B2C3CE'>" . $col . "</th>";
-    }
-    echo "</tr></thead>";
-    // Write rows
-    mysql_data_seek($result, 0);
-    while ($row = mysql_fetch_assoc($result)) {
-        echo "<tr>";
-        foreach ($row as $e) {                
-            echo "<td>" . $e . "</td>";
-        }
-        echo "</tr>";
-    }
-    echo "</table>";
-    // Free the resources associated with the result set
-    // This is done automatically at the end of the script
-    mysql_free_result($result);
-}
-
 function create_table($query,$query2) {
     // Perform Query
     $result = mysql_query($query);
@@ -189,52 +115,7 @@ function create_table($query,$query2) {
     // mysql_free_result($result);
 }
 
-
-function treemap($query,$title,$label) {
-    $id = "graph" . $GLOBALS['graphid'];
-    $GLOBALS['graphid'] = $GLOBALS['graphid'] + 1;
-    
-    echo "<h2>" . $title . "</h2>";
-    echo PHP_EOL,'<div align="center" id="'. $id . '"><svg style="height:500px; width:800px"></svg></div>',PHP_EOL;
-    // Perform Query
-    $result = mysql_query($query);
-    // Check result
-    // This shows the actual query sent to MySQL, and the error. Useful for debugging.
-    if (!$result) {
-        $message  = 'Invalid query: ' . mysql_error() . "\n";
-        $message .= 'Whole query: ' . $query;
-        die($message);
-    }
-    $str = "<script type='text/javascript'>
-        function " . $id . "Chart() {";
-    $str = $str . <<<MY_MARKER
-       make_vis(function() {
-        var chart = d3plus.viz()
-        .container("#viz")
-        .data(Data())
-        .type("tree_map")
-        .id("name")
-        .size("value")
-        .color("growth")
-        .draw()
-
-        return chart;
-    });
-
-}    
-MY_MARKER;
-    $str = $str . PHP_EOL . $id . "Chart();" . PHP_EOL;
-    $str = $str . PHP_EOL . "mycharts.push(". $id . "Chart)" . PHP_EOL;
-    $str = $str . PHP_EOL . "function " . 'Data() {
-        return  ['; 
-    while ($row = mysql_fetch_array($result)) {
-        $str = $str . '{ "value":' . $row[1] . ',"name":"' . $row[0] . '","growth":' . $row[1] .'},' . PHP_EOL;
-    }
-    $str = $str . '] }</script>';
-    echo $str;
-}
-
-function treemapdata($query,$title,$label) {
+function treemapdata2($query,$title,$label) {
     $id = "graph" . $GLOBALS['graphid'];
     $GLOBALS['graphid'] = $GLOBALS['graphid'] + 1;
     
@@ -274,18 +155,22 @@ function cluster_table($query,$title) {
     // Attempting to print $result won't allow access to information in the resource
     // One of the mysql result functions must be used
     // See also mysql_result(), mysql_fetch_array(), mysql_fetch_row(), etc.
-    echo "<h3>" . $title . "</h2>";
-    echo "<table align='center'>";
-    echo "<thead><tr></tr>";
     $row = mysql_fetch_assoc($result);
-    foreach ($row as $col => $value) {                
-        echo "<th class = 'rotate' ><div><span>" . $col . "</span></div></th>";
+
+    if(!empty($result)){
+    echo "<h3>" . $title . "</h3>";
+    echo "<table align='center'>";
+    echo "<tr>";
+    for($i = 0; $i < mysql_num_fields($result); $i++) {
+    echo "<th class = 'rotate' ><div><span>" . mysql_field_name($result, $i). "</span></div></th>";
     }
-    echo "</tr></thead>";
+    echo "</tr>";
     // Write rows
-    mysql_data_seek($result, 0);
-    $compta = 0;
+   
+      mysql_data_seek($result, 0);
+    // $compta = 0;
     while ($row = mysql_fetch_assoc($result)) {
+        echo "<tr>";
         foreach ($row as $e) {
             if($e == '0') echo "<td bgcolor='white'></td>";   
             else if($e == '1') echo "<td bgcolor='#FFEB9C'></td>";              
@@ -295,7 +180,11 @@ function cluster_table($query,$title) {
         }
         echo "</tr>";
     }
-    echo "</table>";
+    echo "</table>";  
+    }else{
+       echo "<h2>Insufficient data in selection to generate association matrix for this outcome</h2>";
+    }
+    
     // Free the resources associated with the result set
     // This is done automatically at the end of the script
     mysql_free_result($result);
@@ -348,6 +237,87 @@ function table_data($query1, $query2) {
     // Free the resources associated with the result set
     // This is done automatically at the end of the script
     mysql_free_result($result);
+}
+
+
+function treemapdata($query,$title,$label) {
+    // Perform Query
+    $result = mysql_query($query);
+    // Check result
+    // This shows the actual query sent to MySQL, and the error. Useful for debugging.
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysql_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
+    $str = $str . "[['Race', 'Global', 'Value (size)', 'Growth (color)'],". PHP_EOL;
+    $str = $str . " ['Global', null, 0, 0],". PHP_EOL;
+    while ($row = mysql_fetch_array($result)) {
+        $str = $str . " ['" . $row[0] . "', 'Global', " . $row[1] . ", " . $row[2] ."], " . PHP_EOL;
+    }
+    rtrim($str, ", ");
+    $str = $str . "]";
+    
+    return $str;
+}
+
+
+function tree($query,$global) {    
+    $id = "treemap" . $GLOBALS['graphid'];
+    $GLOBALS['graphid'] = $GLOBALS['graphid'] + 1;
+    // Perform Query
+    $result = mysql_query($query);
+
+    // Check result
+    // This shows the actual query sent to MySQL, and the error. Useful for debugging.
+    if (!$result) {
+        $message  = 'Invalid query: ' . mysql_error() . "\n";
+        $message .= 'Whole query: ' . $query;
+        die($message);
+    }
+
+    //Load the data
+    $str = $str . "[['Race', 'Global', 'Value (size)', 'Growth (color)'],". PHP_EOL;
+    $str = $str . " ['".$global."', null, 0, 0],". PHP_EOL;
+    while ($row = mysql_fetch_array($result)) {
+        $str = $str . " ['" . $row[0] . "', '".$global."', " . $row[1] . ", " . $row[2] ."], " . PHP_EOL;
+    }
+    rtrim($str, ", ");
+    $str = $str . "]";
+
+
+    $str2 = " <script type='text/javascript'>
+    google.load('visualization', '1', {packages:['treemap']});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable(".$str.");
+
+        tree = new google.visualization.TreeMap(document.getElementById('".$id."'));
+
+        tree.draw(data, {
+          minColor: '#f00',
+          midColor: '#ddd',
+          maxColor: '#0d0',
+          headerHeight: 25,
+          fontColor: 'black',
+          showScale: true,
+          generateTooltip: showFullTooltip
+        });
+
+    function showFullTooltip(row, size, value) {
+        return '<div style=\"background:#fd9; padding:10px; border-style:solid\">' +
+           '<span style=\"font-family:Courier\"><b>' + data.getValue(row, 0) +
+           '</b>, ' + data.getValue(row, 1) + '</span><br>' + '<br>' +
+           'Number of Patients: ' + size + '<br>' +
+            'Average length of stay (colour): ' + ': ' + data.getValue(row, 3) + ' </div>';
+    }
+
+      }
+       </script>";
+    echo $str2;
+    echo PHP_EOL,"<div id= '".$id."' style='width: 500px; height: 300px;'></div>",PHP_EOL;
+    $str = $str . PHP_EOL . "mycharts.push(". $id . "tree.draw)" . PHP_EOL;
 }
 
 
