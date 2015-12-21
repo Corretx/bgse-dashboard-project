@@ -102,6 +102,5 @@ for(j in 1:nout){
   }
 
   dbWriteTable(mydb, paste("Matrix",out_list[j],sep="_"), final,overwrite=TRUE,row.names=FALSE)
-  }
   
 }
