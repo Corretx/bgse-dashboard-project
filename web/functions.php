@@ -129,9 +129,8 @@ function cluster_table($query,$title) {
     // One of the mysql result functions must be used
     // See also mysql_result(), mysql_fetch_array(), mysql_fetch_row(), etc.
     $count = mysql_num_rows($result);
-    echo $count; 
     if($count == 0){
-      echo "<h2>Insufficient data in selection to generate association matrix for this outcome</h2>";
+      echo "<h3>Insufficient data in selection to generate association matrix. Please try another outcome.</h3>";
     }else{
     echo "<h3>" . $title . "</h3>";
     echo "<table align='center'>";
