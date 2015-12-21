@@ -84,6 +84,7 @@ for(j in 1:nout){
   final <- final[which(final$n_hum > 9 & final$n_nov > 9 & final$n_hum_high > 1 & final$n_nov_high > 1),]
   
   N <- nrow(final)
+  if(N >0){
   final$chi.squared <- NA
   final$p_value <- NA
   for(i in 1:N){
@@ -98,9 +99,9 @@ for(j in 1:nout){
   
   final <- final[order(final$p_value),]
   final <- final[-which(final$p_value > 0.9),]
-  
-  if(nrow(final) >0){
-    dbWriteTable(mydb, paste("Matrix",out_list[j],sep="_"), final,overwrite=TRUE,row.names=FALSE)
+  }
+
+  dbWriteTable(mydb, paste("Matrix",out_list[j],sep="_"), final,overwrite=TRUE,row.names=FALSE)
   }
   
 }
