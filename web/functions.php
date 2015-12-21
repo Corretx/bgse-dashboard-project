@@ -128,7 +128,9 @@ function cluster_table($query,$title) {
     // Attempting to print $result won't allow access to information in the resource
     // One of the mysql result functions must be used
     // See also mysql_result(), mysql_fetch_array(), mysql_fetch_row(), etc.
-    if(mysql_num_rows($result) < 1){
+    $count = mysql_num_rows($result);
+    echo $count; 
+    if($count == 0){
       echo "<h2>Insufficient data in selection to generate association matrix for this outcome</h2>";
     }else{
     echo "<h3>" . $title . "</h3>";
